@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   I2C_S                                                             11/12/2020 12:58:00 PAGE 1   
+C51 COMPILER V9.56.0.0   I2C_S                                                             11/12/2020 13:12:39 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE I2C_S
@@ -62,7 +62,7 @@ line level    source
              -***
               
               
-C51 COMPILER V9.56.0.0   I2C_S                                                             11/12/2020 12:58:00 PAGE 2   
+C51 COMPILER V9.56.0.0   I2C_S                                                             11/12/2020 13:12:39 PAGE 2   
 
               //#define I2C_CLOCK               13
               #define EEPROM_SLA                0xA0//0xA0
@@ -126,7 +126,7 @@ line level    source
                       
                       case 0xC8:
                           AA = 1;
-C51 COMPILER V9.56.0.0   I2C_S                                                             11/12/2020 12:58:00 PAGE 3   
+C51 COMPILER V9.56.0.0   I2C_S                                                             11/12/2020 13:12:39 PAGE 3   
 
                           break;
                   }

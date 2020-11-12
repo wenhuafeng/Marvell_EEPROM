@@ -50,23 +50,23 @@
 //--------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
-#define SCLK						P11
-#define SDIO						P10
-#define	SDA_PORT				P1
-#define	SDA_NUMBER			(1 << 0)
-#define SDAIN()					do{P10_Input_Mode;}while(0)
-#define SDAOUT()				do{P10_PushPull_Mode;}while(0)
-//#define	EN_SDA_SCL_PU()	do{P5PU |= ((1<<1)|(1<<2));}while(0)
-//#define	DI_SDA_SCL_PU()	do{P5PU &= ~((1<<1)|(1<<2));}while(0)
-#define TPS23861_RST		P00
+#define SCLK            P11
+#define SDIO            P10
+#define  SDA_PORT        P1
+#define  SDA_NUMBER      (1 << 0)
+#define SDAIN()          do{P10_Input_Mode;}while(0)
+#define SDAOUT()        do{P10_PushPull_Mode;}while(0)
+//#define  EN_SDA_SCL_PU()  do{P5PU |= ((1<<1)|(1<<2));}while(0)
+//#define  DI_SDA_SCL_PU()  do{P5PU &= ~((1<<1)|(1<<2));}while(0)
+#define TPS23861_RST    P00
 
-#define IICSENB0Address	0x20
+#define IICSENB0Address  0x20
 
-#define	HIGH						1
-#define	LOW							0
+#define  HIGH            1
+#define  LOW              0
 
-#define Write						0
-#define Read						1
+#define Write            0
+#define Read            1
 
 #define CLEAR  0
 #define SET    1
@@ -104,8 +104,8 @@
 #define I2C_SUCCESSFUL         0
 
 enum {
-		_MODE_AUTO_		= 0x00,
-		_MODE_OFF_		= 0xff,
+    _MODE_AUTO_    = 0x00,
+    _MODE_OFF_    = 0xff,
 };
 OS_EXT u8 TPS23861_WorkMode;
 
@@ -177,14 +177,14 @@ typedef struct {
 /// @note The interrupt status flag may be active for events or faults that are masked. No interrupt will be generated, but the status
 ///        may be present along side of another event which is allowed to generate an interrupt.  
 typedef struct {
-	unsigned char PEC_Power_Enable_Change                    : 1;   ///< Indicates a power enable status change occurred on at least one port
-	unsigned char PGC_Power_Good_Change                      : 1;   ///< Indicates a power good change occurred on at least one port
-	unsigned char DISF_Disconnect_Event                      : 1;   ///< Indicates a disconnect event occurred on at least one port
-	unsigned char DETC_Detection_Cycle                       : 1;   ///< Indicates at least one detection cycle occurred on at least one port
-	unsigned char CLASC_Classification_Cycle                 : 1;   ///< Indicates at least one classification cycle occurred on at least one port
-	unsigned char IFAULT_ICUT_ILIM_Fault                     : 1;   ///< Indicates that an ICUT or ILIM fault occurred on at least one port
-	unsigned char INRF_Inrush_Fault                          : 1;   ///< Indicates that an Inrush fault occurred on at least one port
-	unsigned char SUPF_Supply_Event_Fault                    : 1;   ///< Indicates that a supply event fault occurred
+  unsigned char PEC_Power_Enable_Change                    : 1;   ///< Indicates a power enable status change occurred on at least one port
+  unsigned char PGC_Power_Good_Change                      : 1;   ///< Indicates a power good change occurred on at least one port
+  unsigned char DISF_Disconnect_Event                      : 1;   ///< Indicates a disconnect event occurred on at least one port
+  unsigned char DETC_Detection_Cycle                       : 1;   ///< Indicates at least one detection cycle occurred on at least one port
+  unsigned char CLASC_Classification_Cycle                 : 1;   ///< Indicates at least one classification cycle occurred on at least one port
+  unsigned char IFAULT_ICUT_ILIM_Fault                     : 1;   ///< Indicates that an ICUT or ILIM fault occurred on at least one port
+  unsigned char INRF_Inrush_Fault                          : 1;   ///< Indicates that an Inrush fault occurred on at least one port
+  unsigned char SUPF_Supply_Event_Fault                    : 1;   ///< Indicates that a supply event fault occurred
 }TPS238X_Interrupt_Register_t;
 
 #define PEC                                    0x01   ///< Indicates a power enable status change occurred on at least one port
@@ -201,14 +201,14 @@ typedef struct {
 /// Enables the various events and faults to generate interrupts
 /// @note that writing a 0 masks the events. Writing a 1 to the bit unmasks the interrupt
 typedef struct {
-	unsigned char PEMSK_Power_Enable_Unmask                  : 1;   ///< Enable power enable interrupts
-	unsigned char PGMSK_Power_Good_Unmask                    : 1;   ///< Enable power good interrupts
-	unsigned char DIMSK_Disconnect_Unmask                    : 1;   ///< Enable disconnect event interrupts
-	unsigned char DEMSK_Detection_Cycle_Unmask               : 1;   ///< Enable detection cycle event interrupts
-	unsigned char CLMSK_Classificiation_Cycle_Unmask         : 1;   ///< Enable classification cycle event interrupts
-	unsigned char IFMSK_IFAULT_Unmask                        : 1;   ///< Enable ICUT or OLIM fault interrupts
-	unsigned char INMSK_Inrush_Fault_Unmask                  : 1;   ///< Enable Inrush fault interrupts
-	unsigned char SUMSK_Supply_Event_Fault_Unmask            : 1;   ///< Enable supply event fault interrupts
+  unsigned char PEMSK_Power_Enable_Unmask                  : 1;   ///< Enable power enable interrupts
+  unsigned char PGMSK_Power_Good_Unmask                    : 1;   ///< Enable power good interrupts
+  unsigned char DIMSK_Disconnect_Unmask                    : 1;   ///< Enable disconnect event interrupts
+  unsigned char DEMSK_Detection_Cycle_Unmask               : 1;   ///< Enable detection cycle event interrupts
+  unsigned char CLMSK_Classificiation_Cycle_Unmask         : 1;   ///< Enable classification cycle event interrupts
+  unsigned char IFMSK_IFAULT_Unmask                        : 1;   ///< Enable ICUT or OLIM fault interrupts
+  unsigned char INMSK_Inrush_Fault_Unmask                  : 1;   ///< Enable Inrush fault interrupts
+  unsigned char SUMSK_Supply_Event_Fault_Unmask            : 1;   ///< Enable supply event fault interrupts
 }TPS238X_Interrupt_Mask_Register_t;
 
 #define PEMSK                                  0x01   ///< Enable power enable interrupts
@@ -225,14 +225,14 @@ typedef struct {
 ///                      - Command 03h; 1 data byte; Clear on read <br><br>
 /// Changes to the power enable or power good status occurred for at least one port
 typedef struct {
-	unsigned char PEC1_Power_Enable_Port_1_Event             : 1;   ///< Change to power enable status for port 1
-	unsigned char PEC2_Power_Enable_Port_2_Event             : 1;   ///< Change to power enable status for port 2
-	unsigned char PEC3_Power_Enable_Port_3_Event             : 1;   ///< Change to power enable status for port 3
-	unsigned char PEC4_Power_Enable_Port_4_Event             : 1;   ///< Change to power enable status for port 4
-	unsigned char PGC1_Power_Good_Port_1_Event               : 1;   ///< Change to power good status for port 1
-	unsigned char PGC2_Power_Good_Port_2_Event               : 1;   ///< Change to power good status for port 2
-	unsigned char PGC3_Power_Good_Port_3_Event               : 1;   ///< Change to power good status for port 3
-	unsigned char PGC4_Power_Good_Port_4_Event               : 1;   ///< Change to power good status for port 4
+  unsigned char PEC1_Power_Enable_Port_1_Event             : 1;   ///< Change to power enable status for port 1
+  unsigned char PEC2_Power_Enable_Port_2_Event             : 1;   ///< Change to power enable status for port 2
+  unsigned char PEC3_Power_Enable_Port_3_Event             : 1;   ///< Change to power enable status for port 3
+  unsigned char PEC4_Power_Enable_Port_4_Event             : 1;   ///< Change to power enable status for port 4
+  unsigned char PGC1_Power_Good_Port_1_Event               : 1;   ///< Change to power good status for port 1
+  unsigned char PGC2_Power_Good_Port_2_Event               : 1;   ///< Change to power good status for port 2
+  unsigned char PGC3_Power_Good_Port_3_Event               : 1;   ///< Change to power good status for port 3
+  unsigned char PGC4_Power_Good_Port_4_Event               : 1;   ///< Change to power good status for port 4
 }TPS238X_Power_Enable_Register_t;
 
 #define PEC1                                   0x01   ///< Change to power enable status for port 1
@@ -252,14 +252,14 @@ typedef struct {
 ///                          - Command 05h; 1 data byte; Clear on read  <br><br>
 /// Detection and/or classification cycles occurred on at least one port
 typedef struct {
-	unsigned char DETC1_Detection_Cycle_Port_1_Event         : 1;   ///< Detection cycle occurred on port 1
-	unsigned char DETC2_Detection_Cycle_Port_2_Event         : 1;   ///< Detection cycle occurred on port 2
-	unsigned char DETC3_Detection_Cycle_Port_3_Event         : 1;   ///< Detection cycle occurred on port 3
-	unsigned char DETC4_Detection_Cycle_Port_4_Event         : 1;   ///< Detection cycle occurred on port 4
-	unsigned char CLSC1_Classification_Cycle_Port_1_Event    : 1;   ///< Classification cycle occurred on port 1
-	unsigned char CLSC2_Classification_Cycle_Port_2_Event    : 1;   ///< Classification cycle occurred on port 2
-	unsigned char CLSC3_Classification_Cycle_Port_3_Event    : 1;   ///< Classification cycle occurred on port 3
-	unsigned char CLSC4_Classification_Cycle_Port_4_Event    : 1;   ///< Classification cycle occurred on port 4
+  unsigned char DETC1_Detection_Cycle_Port_1_Event         : 1;   ///< Detection cycle occurred on port 1
+  unsigned char DETC2_Detection_Cycle_Port_2_Event         : 1;   ///< Detection cycle occurred on port 2
+  unsigned char DETC3_Detection_Cycle_Port_3_Event         : 1;   ///< Detection cycle occurred on port 3
+  unsigned char DETC4_Detection_Cycle_Port_4_Event         : 1;   ///< Detection cycle occurred on port 4
+  unsigned char CLSC1_Classification_Cycle_Port_1_Event    : 1;   ///< Classification cycle occurred on port 1
+  unsigned char CLSC2_Classification_Cycle_Port_2_Event    : 1;   ///< Classification cycle occurred on port 2
+  unsigned char CLSC3_Classification_Cycle_Port_3_Event    : 1;   ///< Classification cycle occurred on port 3
+  unsigned char CLSC4_Classification_Cycle_Port_4_Event    : 1;   ///< Classification cycle occurred on port 4
 }TPS238X_Detection_Event_Register_t;
 
 #define DETC1                                  0x01   ///< Detection cycle occurred on port 1
@@ -279,14 +279,14 @@ typedef struct {
 ///                      - Command 07h; 1 data byte; Clear on read    <br><br>
 /// ICUT fault and disconnect events occurred for at least one port
 typedef struct {
-	unsigned char ICUT1_ICUT_Fault_Port_1_Event              : 1;    ///< ICUT fault occurred at port 1
-	unsigned char ICUT2_ICUT_Fault_Port_2_Event              : 1;    ///< ICUT fault occurred at port 2
-	unsigned char ICUT3_ICUT_Fault_Port_3_Event              : 1;    ///< ICUT fault occurred at port 3
-	unsigned char ICUT4_ICUT_Fault_Port_4_Event              : 1;    ///< ICUT fault occurred at port 4
-	unsigned char DISF1_Disconnect_Port_1_Event              : 1;    ///< Disconnect event occurred at port 1
-	unsigned char DISF2_Disconnect_Port_2_Event              : 1;    ///< Disconnect event occurred at port 2
-	unsigned char DISF3_Disconnect_Port_3_Event              : 1;    ///< Disconnect event occurred at port 3
-	unsigned char DISF4_Disconnect_Port_4_Event              : 1;    ///< Disconnect event occurred at port 4
+  unsigned char ICUT1_ICUT_Fault_Port_1_Event              : 1;    ///< ICUT fault occurred at port 1
+  unsigned char ICUT2_ICUT_Fault_Port_2_Event              : 1;    ///< ICUT fault occurred at port 2
+  unsigned char ICUT3_ICUT_Fault_Port_3_Event              : 1;    ///< ICUT fault occurred at port 3
+  unsigned char ICUT4_ICUT_Fault_Port_4_Event              : 1;    ///< ICUT fault occurred at port 4
+  unsigned char DISF1_Disconnect_Port_1_Event              : 1;    ///< Disconnect event occurred at port 1
+  unsigned char DISF2_Disconnect_Port_2_Event              : 1;    ///< Disconnect event occurred at port 2
+  unsigned char DISF3_Disconnect_Port_3_Event              : 1;    ///< Disconnect event occurred at port 3
+  unsigned char DISF4_Disconnect_Port_4_Event              : 1;    ///< Disconnect event occurred at port 4
 }TPS238X_Fault_Event_Register_t;
 
 #define ICUT1                                  0x01    ///< ICUT fault occurred at port 1
@@ -306,14 +306,14 @@ typedef struct {
 ///                            - Command 09h; 1 data byte; Clear on read  <br><br>
 /// Inrush and ILIM fault events have occurred for at least one port
 typedef struct {
-	unsigned char INR1_Inrush_Fault_Port_1_Event             : 1;    ///< Inrush fault occurred at port 1
-	unsigned char INR2_Inrush_Fault_Port_2_Event             : 1;    ///< Inrush fault occurred at port 2
-	unsigned char INR3_Inrush_Fault_Port_3_Event             : 1;    ///< Inrush fault occurred at port 3
-	unsigned char INR4_Inrush_Fault_Port_4_Event             : 1;    ///< Inrush fault occurred at port 4
-	unsigned char ILIM1_Limit_Output_Current_Port_1_Event    : 1;    ///< ILIM fault occurred at port 1
-	unsigned char ILIM2_Limit_Output_Current_Port_2_Event    : 1;    ///< ILIM fault occurred at port 2
-	unsigned char ILIM3_Limit_Output_Current_Port_3_Event    : 1;    ///< ILIM fault occurred at port 3
-	unsigned char ILIM4_Limit_Output_Current_Port_4_Event    : 1;    ///< ILIM fault occurred at port 4
+  unsigned char INR1_Inrush_Fault_Port_1_Event             : 1;    ///< Inrush fault occurred at port 1
+  unsigned char INR2_Inrush_Fault_Port_2_Event             : 1;    ///< Inrush fault occurred at port 2
+  unsigned char INR3_Inrush_Fault_Port_3_Event             : 1;    ///< Inrush fault occurred at port 3
+  unsigned char INR4_Inrush_Fault_Port_4_Event             : 1;    ///< Inrush fault occurred at port 4
+  unsigned char ILIM1_Limit_Output_Current_Port_1_Event    : 1;    ///< ILIM fault occurred at port 1
+  unsigned char ILIM2_Limit_Output_Current_Port_2_Event    : 1;    ///< ILIM fault occurred at port 2
+  unsigned char ILIM3_Limit_Output_Current_Port_3_Event    : 1;    ///< ILIM fault occurred at port 3
+  unsigned char ILIM4_Limit_Output_Current_Port_4_Event    : 1;    ///< ILIM fault occurred at port 4
 }TPS238X_Inrush_ILIM_Event_Register_t;
 
 #define INR1                                   0x01    ///< Inrush fault occurred at port 1
@@ -334,11 +334,11 @@ typedef struct {
 ///                       - Command 0Bh; 1 data byte; Clear on read  <br><br>
 /// Identifies events with the system power supply
 typedef struct {
-	unsigned char Reserved_1                                 : 4;
-	unsigned char VPUV_VPower_Undervoltage_Event             : 1;   ///< VPWR Undervoltage
-	unsigned char VDUV_Vdd_UVLO_Event                        : 1;   ///< VDD UVLO Occurred. Power on reset happened
-	unsigned char Reserved_2                                 : 1;
-	unsigned char TSD_Thermal_Shutdown_Event                 : 1;   ///< Thermal shutdown occurred
+  unsigned char Reserved_1                                 : 4;
+  unsigned char VPUV_VPower_Undervoltage_Event             : 1;   ///< VPWR Undervoltage
+  unsigned char VDUV_Vdd_UVLO_Event                        : 1;   ///< VDD UVLO Occurred. Power on reset happened
+  unsigned char Reserved_2                                 : 1;
+  unsigned char TSD_Thermal_Shutdown_Event                 : 1;   ///< Thermal shutdown occurred
 }TPS238X_Supply_Event_Register_t;
 
 #define VPUV                                   0x10
@@ -398,14 +398,14 @@ typedef enum {
 ///              Hardware - Command 10h; 1 data byte; read only   <br><br>
 /// Provides status for each port about the power enable and power good settings
 typedef struct {
-	unsigned char PE1_Power_Enable_Port_1_Status             : 1;   ///< Port 1 has power enabled
-	unsigned char PE2_Power_Enable_Port_2_Status             : 1;   ///< Port 2 has power enabled
-	unsigned char PE3_Power_Enable_Port_3_Status             : 1;   ///< Port 3 has power enabled
-	unsigned char PE4_Power_Enable_Port_4_Status             : 1;   ///< Port 4 has power enabled
-	unsigned char PG1_Power_Good_Port_1_Status               : 1;   ///< Port 1 is powered on with good voltage levels
-	unsigned char PG2_Power_Good_Port_2_Status               : 1;   ///< Port 2 is powered on with good voltage levels
-	unsigned char PG3_Power_Good_Port_3_Status               : 1;   ///< Port 3 is powered on with good voltage levels
-	unsigned char PG4_Power_Good_Port_4_Status               : 1;   ///< Port 4 is powered on with good voltage levels
+  unsigned char PE1_Power_Enable_Port_1_Status             : 1;   ///< Port 1 has power enabled
+  unsigned char PE2_Power_Enable_Port_2_Status             : 1;   ///< Port 2 has power enabled
+  unsigned char PE3_Power_Enable_Port_3_Status             : 1;   ///< Port 3 has power enabled
+  unsigned char PE4_Power_Enable_Port_4_Status             : 1;   ///< Port 4 has power enabled
+  unsigned char PG1_Power_Good_Port_1_Status               : 1;   ///< Port 1 is powered on with good voltage levels
+  unsigned char PG2_Power_Good_Port_2_Status               : 1;   ///< Port 2 is powered on with good voltage levels
+  unsigned char PG3_Power_Good_Port_3_Status               : 1;   ///< Port 3 is powered on with good voltage levels
+  unsigned char PG4_Power_Good_Port_4_Status               : 1;   ///< Port 4 is powered on with good voltage levels
 }TPS238x_Power_Stauts_Register_t;
 
 #define PE1_STATUS                             0x01   ///< Port 1 has power enabled
@@ -427,8 +427,8 @@ typedef struct {
 ///                            - writable during I2C slave address programming protocol <br><br>
 /// A chain of TPS23861 devices can be configured by the processor to provide each device with a unique I2C address
 typedef struct {
-	unsigned char I2C_slave_address                          : 7;    ///< 7 bit I2C address
-	unsigned char Auto                                       : 1;    ///< The part will default into auto mode after power on if this bit is set
+  unsigned char I2C_slave_address                          : 7;    ///< 7 bit I2C address
+  unsigned char Auto                                       : 1;    ///< The part will default into auto mode after power on if this bit is set
 }TPS238x_I2C_Slave_Address_Register_t;
 
 #define AUTO_BIT                               0x80    ///< The part will default into auto mode after power on if this bit is set
@@ -442,10 +442,10 @@ typedef struct {
 ///                Hardware - Command 12h; 1 data byte; read/write                                         <br><br>
 /// Configures the operating mode for each port (off, manual, semi-auto, or auto)
 typedef struct {
-	unsigned char Port_1_Operating_Mode                      : 2;    ///< Operating mode for port 1
-	unsigned char Port_2_Operating_Mode                      : 2;    ///< Operating mode for port 2
-	unsigned char Port_3_Operating_Mode                      : 2;    ///< Operating mode for port 3
-	unsigned char Port_4_Operating_Mode                      : 2;    ///< Operating mode for port 4
+  unsigned char Port_1_Operating_Mode                      : 2;    ///< Operating mode for port 1
+  unsigned char Port_2_Operating_Mode                      : 2;    ///< Operating mode for port 2
+  unsigned char Port_3_Operating_Mode                      : 2;    ///< Operating mode for port 3
+  unsigned char Port_4_Operating_Mode                      : 2;    ///< Operating mode for port 4
 }TPS238x_Operating_Mode_Register_t;
 
 /// Operating mode for each of the ports (off, manual, semi-auto, auto)
@@ -467,11 +467,11 @@ typedef enum {
 ///                   Hardware - Command 13h; 1 data byte; read/write <br><br>
 /// Enable the disconnect detection mechanism for the indicated ports. 
 typedef struct {
-	unsigned char DCDE1_Disconnect_Enable_Port_1             : 1;   ///< DC disconnect enable for 2 pair operation in port 1
-	unsigned char DCDE2_Disconnect_Enable_Port_2             : 1;   ///< DC disconnect enable for 2 pair operation in port 2
-	unsigned char DCDE3_Disconnect_Enable_Port_3             : 1;   ///< DC disconnect enable for 2 pair operation in port 3
-	unsigned char DCDE4_Disconnect_Enable_Port_4             : 1;   ///< DC disconnect enable for 2 pair operation in port 4
-	unsigned char Reserved_3                                 : 4;
+  unsigned char DCDE1_Disconnect_Enable_Port_1             : 1;   ///< DC disconnect enable for 2 pair operation in port 1
+  unsigned char DCDE2_Disconnect_Enable_Port_2             : 1;   ///< DC disconnect enable for 2 pair operation in port 2
+  unsigned char DCDE3_Disconnect_Enable_Port_3             : 1;   ///< DC disconnect enable for 2 pair operation in port 3
+  unsigned char DCDE4_Disconnect_Enable_Port_4             : 1;   ///< DC disconnect enable for 2 pair operation in port 4
+  unsigned char Reserved_3                                 : 4;
 } TPS238x_Disconnect_Enable_Register_t;
 
 #define DCDE1                                  0x01     ///< DC disconnect enable for 2 pair operation in port 1
@@ -489,14 +489,14 @@ typedef struct {
 /// In auto mode, classifications will follow valid detections, and power up will follow valid classifications. <br>
 /// @note During cool down time following a fault, execution of this command will be delayed till the end of the cool down period.
 typedef struct {
-	unsigned char DETE1_Detection_Enable_Port_1              : 1;     ///< Enable detections for port 1
-	unsigned char DETE2_Detection_Enable_Port_2              : 1;     ///< Enable detections for port 2
-	unsigned char DETE3_Detection_Enable_Port_3              : 1;     ///< Enable detections for port 3
-	unsigned char DETE4_Detection_Enable_Port_4              : 1;     ///< Enable detections for port 4
-	unsigned char CLE1_Classification_Enable_Port_1          : 1;     ///< Enable classifications for port 1
-	unsigned char CLE2_Classification_Enable_Port_2          : 1;     ///< Enable classifications for port 2
-	unsigned char CLE3_Classification_Enable_Port_3          : 1;     ///< Enable classifications for port 3
-	unsigned char CLE4_Classification_Enable_Port_4          : 1;     ///< Enable classifications for port 4
+  unsigned char DETE1_Detection_Enable_Port_1              : 1;     ///< Enable detections for port 1
+  unsigned char DETE2_Detection_Enable_Port_2              : 1;     ///< Enable detections for port 2
+  unsigned char DETE3_Detection_Enable_Port_3              : 1;     ///< Enable detections for port 3
+  unsigned char DETE4_Detection_Enable_Port_4              : 1;     ///< Enable detections for port 4
+  unsigned char CLE1_Classification_Enable_Port_1          : 1;     ///< Enable classifications for port 1
+  unsigned char CLE2_Classification_Enable_Port_2          : 1;     ///< Enable classifications for port 2
+  unsigned char CLE3_Classification_Enable_Port_3          : 1;     ///< Enable classifications for port 3
+  unsigned char CLE4_Classification_Enable_Port_4          : 1;     ///< Enable classifications for port 4
 } TPS238x_Detect_Classification_Enable_Register_t;
 
 #define DETE1                                  0x01     ///< Enable detections for port 1
@@ -513,10 +513,10 @@ typedef struct {
 /// Port power priority bits used for fast shutdown
 typedef struct {
     unsigned char Reserved_4                                 : 4;
-	unsigned char FSE1_Fast_Shutdown_Enable_Port_1           : 1;   ///< Enable fast shutdown port 1
-	unsigned char FSE2_Fast_Shutdown_Enable_Port_2           : 1;   ///< Enable fast shutdown port 2
-	unsigned char FSE3_Fast_Shutdown_Enable_Port_3           : 1;   ///< Enable fast shutdown port 3
-	unsigned char FSE4_Fast_Shutdown_Enable_Port_4           : 1;   ///< Enable fast shutdown port 4
+  unsigned char FSE1_Fast_Shutdown_Enable_Port_1           : 1;   ///< Enable fast shutdown port 1
+  unsigned char FSE2_Fast_Shutdown_Enable_Port_2           : 1;   ///< Enable fast shutdown port 2
+  unsigned char FSE3_Fast_Shutdown_Enable_Port_3           : 1;   ///< Enable fast shutdown port 3
+  unsigned char FSE4_Fast_Shutdown_Enable_Port_4           : 1;   ///< Enable fast shutdown port 4
 } TPS238x_Fast_Shutdown_t;
 
 #define FSE1                                   0x10
@@ -530,10 +530,10 @@ typedef struct {
 ///                      Hardware - Command 16h; 1 data byte; read/write   <br><br>
 /// Set the timing configurations used by all four ports
 typedef struct {
-	unsigned char TDIS_Time_Disconnect_Delay                 : 2;    ///< Disconnect delay, which is the time to turn off a port once there is a disconnect condition
+  unsigned char TDIS_Time_Disconnect_Delay                 : 2;    ///< Disconnect delay, which is the time to turn off a port once there is a disconnect condition
     unsigned char TICUT_ICUT_Fault_Timing                    : 2;    ///< ICUT Fault Timing period, which is the overcurrent time duration before port turn off 
-	unsigned char TSTART_Start_Time                          : 2;    ///< TSTART period, which is the maximum allowed overcurrent time during inrush
-	unsigned char TLIM_ILIM_Fault_Timing                     : 2;    ///< ILIM fault timing, which is the foldback current time limit duration before port turn off
+  unsigned char TSTART_Start_Time                          : 2;    ///< TSTART period, which is the maximum allowed overcurrent time during inrush
+  unsigned char TLIM_ILIM_Fault_Timing                     : 2;    ///< ILIM fault timing, which is the foldback current time limit duration before port turn off
 } TPS238x_Timing_Configuration_Register_t;
 
 /// Set the ILIM fault timing, which is the foldback current time limit duration before port turn off. Used in tps_SetTiming()
@@ -584,11 +584,11 @@ typedef enum {
 ///                Hardware - Command 17h; 1 data byte; read/write  <br><br>
 ///
 typedef struct {
-	unsigned char _250M_Current_Sense_250_mOhm                 : 1;     ///< 0 = 255 mOhm current sense resistor; 1 = 250 mOhm
-	unsigned char Reserved_5                                   : 3;
-	unsigned char MAINS_Detection_Voltage_Measurement_Duration : 1;     ///< 0 = Convert port voltage 800 A/D per second; 1 = 960
-	unsigned char Reserved_6                                   : 2;
-	unsigned char INTEN_INT_Pin_Mask                           : 1;     ///< 1 = Interrupts will generate \\INT pin output 
+  unsigned char _250M_Current_Sense_250_mOhm                 : 1;     ///< 0 = 255 mOhm current sense resistor; 1 = 250 mOhm
+  unsigned char Reserved_5                                   : 3;
+  unsigned char MAINS_Detection_Voltage_Measurement_Duration : 1;     ///< 0 = Convert port voltage 800 A/D per second; 1 = 960
+  unsigned char Reserved_6                                   : 2;
+  unsigned char INTEN_INT_Pin_Mask                           : 1;     ///< 1 = Interrupts will generate \\INT pin output 
 } TPS238x_General_Mask_1_Register_t;
 
 #define _960_A_D_CONV_PER_SECOND               0x10
@@ -606,14 +606,14 @@ typedef struct {
 /// @note During a cool down period following a fault condition, this command will be accepted, but deferrred until the cool down timer expires.
 
 typedef struct {
-	unsigned char RDET1_Restart_Detection_Port_1             : 1;    ///< Restart Detection Port 1
-	unsigned char RDET2_Restart_Detection_Port_2             : 1;    ///< Restart Detection Port 2
-	unsigned char RDET3_Restart_Detection_Port_3             : 1;    ///< Restart Detection Port 3
-	unsigned char RDET4_Restart_Detection_Port_4             : 1;    ///< Restart Detection Port 4
-	unsigned char RCL1_Restart_Classification_Port_1         : 1;    ///< Restart Classification Port 1
-	unsigned char RCL2_Restart_Classification_Port_2         : 1;    ///< Restart Classification Port 2
-	unsigned char RCL3_Restart_Classification_Port_3         : 1;    ///< Restart Classification Port 3
-	unsigned char RCL4_Restart_Classification_Port_4         : 1;    ///< Restart Classification Port 4
+  unsigned char RDET1_Restart_Detection_Port_1             : 1;    ///< Restart Detection Port 1
+  unsigned char RDET2_Restart_Detection_Port_2             : 1;    ///< Restart Detection Port 2
+  unsigned char RDET3_Restart_Detection_Port_3             : 1;    ///< Restart Detection Port 3
+  unsigned char RDET4_Restart_Detection_Port_4             : 1;    ///< Restart Detection Port 4
+  unsigned char RCL1_Restart_Classification_Port_1         : 1;    ///< Restart Classification Port 1
+  unsigned char RCL2_Restart_Classification_Port_2         : 1;    ///< Restart Classification Port 2
+  unsigned char RCL3_Restart_Classification_Port_3         : 1;    ///< Restart Classification Port 3
+  unsigned char RCL4_Restart_Classification_Port_4         : 1;    ///< Restart Classification Port 4
 } TPS238x_Detect_Class_Restart_Register_t;
 
 #define RDET1                                  0x01    ///< Restart Detection Port 1
@@ -637,14 +637,14 @@ typedef struct {
 /// @note Setting PWON and PWOFF for the same register turns the port OFF
 
 typedef struct {
-	unsigned char PWON1_Power_On_Port_1                      : 1;     ///< Power on Port 1
-	unsigned char PWON2_Power_On_Port_2                      : 1;     ///< Power on Port 2
-	unsigned char PWON3_Power_On_Port_3                      : 1;     ///< Power on Port 3
-	unsigned char PWON4_Power_On_Port_4                      : 1;     ///< Power on Port 4
-	unsigned char PWOFF1_Power_On_Port_1                     : 1;     ///< Power off Port 1
-	unsigned char PWOFF2_Power_On_Port_2                     : 1;     ///< Power off Port 2
-	unsigned char PWOFF3_Power_On_Port_3                     : 1;     ///< Power off Port 3
-	unsigned char PWOFF4_Power_On_Port_4                     : 1;     ///< Power off Port 4
+  unsigned char PWON1_Power_On_Port_1                      : 1;     ///< Power on Port 1
+  unsigned char PWON2_Power_On_Port_2                      : 1;     ///< Power on Port 2
+  unsigned char PWON3_Power_On_Port_3                      : 1;     ///< Power on Port 3
+  unsigned char PWON4_Power_On_Port_4                      : 1;     ///< Power on Port 4
+  unsigned char PWOFF1_Power_On_Port_1                     : 1;     ///< Power off Port 1
+  unsigned char PWOFF2_Power_On_Port_2                     : 1;     ///< Power off Port 2
+  unsigned char PWOFF3_Power_On_Port_3                     : 1;     ///< Power off Port 3
+  unsigned char PWOFF4_Power_On_Port_4                     : 1;     ///< Power off Port 4
 } TPS238x_Power_Enable_Register_t;
 
 #define PWON1                                  0x01     ///< Power on Port 1
@@ -666,14 +666,14 @@ typedef struct {
 ///       Hardware - Command 1Ah; 1 data byte; write only <br><br>
 /// Forces reset events to occur.
 typedef struct {
-	unsigned char RESP1_Reset_Port_1                         : 1;    ///< Reset port 1
-	unsigned char RESP1_Reset_Port_2                         : 1;    ///< Reset port 2
-	unsigned char RESP1_Reset_Port_3                         : 1;    ///< Reset port 3
-	unsigned char RESP1_Reset_Port_4                         : 1;    ///< Reset port 4
-	unsigned char RESAL_Reset_Registers                      : 1;    ///< Reset register bits; Equivalent to power up reset
-	unsigned char Reserved_7                                 : 1;
-	unsigned char CLINP_Clear_Interrupt_Pin                  : 1;     ///< Note this does not affect any of the interrupt status bits
-	unsigned char CLRAIN_Clear_Interrupt_Bits                : 1;     ///< Note this also releases the Interrupt Pin
+  unsigned char RESP1_Reset_Port_1                         : 1;    ///< Reset port 1
+  unsigned char RESP1_Reset_Port_2                         : 1;    ///< Reset port 2
+  unsigned char RESP1_Reset_Port_3                         : 1;    ///< Reset port 3
+  unsigned char RESP1_Reset_Port_4                         : 1;    ///< Reset port 4
+  unsigned char RESAL_Reset_Registers                      : 1;    ///< Reset register bits; Equivalent to power up reset
+  unsigned char Reserved_7                                 : 1;
+  unsigned char CLINP_Clear_Interrupt_Pin                  : 1;     ///< Note this does not affect any of the interrupt status bits
+  unsigned char CLRAIN_Clear_Interrupt_Bits                : 1;     ///< Note this also releases the Interrupt Pin
 } TPS238x_Reset_Register_t;
 
 #define RESP1                                  0x01
@@ -688,8 +688,8 @@ typedef struct {
 ///    Hardware - Command 1Bh; 1 data byte; read/write   <br>
 ///
 typedef struct {
-	unsigned char ICV_IC_Version_Number                      : 3;     ///< IC Version number
-	unsigned char MFR_ID_Manufacture_ID_Number               : 5;     ///< Manufacture Identification Number
+  unsigned char ICV_IC_Version_Number                      : 3;     ///< IC Version number
+  unsigned char MFR_ID_Manufacture_ID_Number               : 5;     ///< Manufacture Identification Number
 } TPS238x_ID_Register_t;
 
 #define ICV                                    0x07
@@ -703,10 +703,10 @@ typedef struct {
 ///                    Hardware - Command 20h; 1 data byte; read/write                   <br><br>
 /// The TPS23861 can perform a legacy-detect operation only or a standard detection followed by a legacy-detect operation.
 typedef struct {
-	unsigned char LEGMOD1_Legacy_Detect_Port_1               : 2;   ///< Port 1 setting: Use TPS238x_Legacy_Detect_t values
-	unsigned char LEGMOD2_Legacy_Detect_Port_2               : 2;   ///< Port 2 setting: Use TPS238x_Legacy_Detect_t values
-	unsigned char LEGMOD3_Legacy_Detect_Port_3               : 2;   ///< Port 3 setting: Use TPS238x_Legacy_Detect_t values
-	unsigned char LEGMOD4_Legacy_Detect_Port_4               : 2;   ///< Port 4 setting: Use TPS238x_Legacy_Detect_t values
+  unsigned char LEGMOD1_Legacy_Detect_Port_1               : 2;   ///< Port 1 setting: Use TPS238x_Legacy_Detect_t values
+  unsigned char LEGMOD2_Legacy_Detect_Port_2               : 2;   ///< Port 2 setting: Use TPS238x_Legacy_Detect_t values
+  unsigned char LEGMOD3_Legacy_Detect_Port_3               : 2;   ///< Port 3 setting: Use TPS238x_Legacy_Detect_t values
+  unsigned char LEGMOD4_Legacy_Detect_Port_4               : 2;   ///< Port 4 setting: Use TPS238x_Legacy_Detect_t values
 } TPS238x_Legacy_Detect_Register_t;
 
 /// Define the legacy-detect mode for each port . Used in tps_ConfigPort() 
@@ -733,10 +733,10 @@ typedef enum {
 ///                          Hardware - Command 21h; 1 data byte; read/write.   <br> <br>
 /// Allows the user to estables two-event physical-layer classification when a class 4 or 5 PD is classified.
 typedef struct {
-	unsigned char TECLEN1_Two_Event_Classification_Port_1    : 2;   ///< Port 1 setting: Use TPS238x_Two_Event_t values 
-	unsigned char TECLEN2_Two_Event_Classification_Port_2    : 2;   ///< Port 2 setting: Use TPS238x_Two_Event_t values
-	unsigned char TECLEN3_Two_Event_Classification_Port_3    : 2;   ///< Port 3 setting: Use TPS238x_Two_Event_t values
-	unsigned char TECLEN4_Two_Event_Classification_Port_4    : 2;   ///< Port 4 setting: Use TPS238x_Two_Event_t values
+  unsigned char TECLEN1_Two_Event_Classification_Port_1    : 2;   ///< Port 1 setting: Use TPS238x_Two_Event_t values 
+  unsigned char TECLEN2_Two_Event_Classification_Port_2    : 2;   ///< Port 2 setting: Use TPS238x_Two_Event_t values
+  unsigned char TECLEN3_Two_Event_Classification_Port_3    : 2;   ///< Port 3 setting: Use TPS238x_Two_Event_t values
+  unsigned char TECLEN4_Two_Event_Classification_Port_4    : 2;   ///< Port 4 setting: Use TPS238x_Two_Event_t values
 } TPS238x_Two_Event_Classification_Register_t;
 
 /// Set the conditions for PSE-initiated two-event physical classifications. Used in tps_ConfigPort()
@@ -763,10 +763,10 @@ typedef enum {
 ///                Hardware - Command 22h; 1 data byte; read/write <br><br>
 /// Establishes four pair operation and defines disconnect modes for 4 four pair architectures
 typedef struct {
-	unsigned char _4P12DIS_Disconnect_Mode_Four_Port_1_2     : 3;   ///< Disconnect mode combinied ports 1&2; Use TPS238x_Four_Pair_t values 
-	unsigned char _4P12EN_Enable_Four_Port_Mode_1_2          : 1;   ///< Enable 4 pair mode for ports 3&4
-	unsigned char _4P34DIS_Disconnect_Mode_Four_Port_3_4     : 3;   ///< Disconnect mode combinied ports 1&2; Use TPS238x_Four_Pair_t values 
-	unsigned char _4P34EN_Enable_Four_Port_Mode_3_4          : 1;   ///< Enable 4 pair mode for ports 3&4
+  unsigned char _4P12DIS_Disconnect_Mode_Four_Port_1_2     : 3;   ///< Disconnect mode combinied ports 1&2; Use TPS238x_Four_Pair_t values 
+  unsigned char _4P12EN_Enable_Four_Port_Mode_1_2          : 1;   ///< Enable 4 pair mode for ports 3&4
+  unsigned char _4P34DIS_Disconnect_Mode_Four_Port_3_4     : 3;   ///< Disconnect mode combinied ports 1&2; Use TPS238x_Four_Pair_t values 
+  unsigned char _4P34EN_Enable_Four_Port_Mode_3_4          : 1;   ///< Enable 4 pair mode for ports 3&4
 } TPS238x_Four_Port_Mode_Register_t;
 
 /// Define Four Pair Disconnect modes in tps_Config4Pair()
@@ -795,11 +795,11 @@ typedef enum {
 ///                        Hardware - Command 27h; 1 data byte; read/write <br><br>
 /// Allows for each port to enable class 5 classifications AND adds the ability to defer non-critical interrupts
 typedef struct {
-	unsigned char TMR_Timer_Period_10_ms                     : 4;   ///< Timer used to gather non-critical interrupts; 10ms LSB
-	unsigned char CL5EN1_Class_5_Enable_Port_1               : 1;   ///< Enable class 5 classifications for port 1
-	unsigned char CL5EN2_Class_5_Enable_Port_2               : 1;   ///< Enable class 5 classifications for port 2
-	unsigned char CL5EN3_Class_5_Enable_Port_3               : 1;   ///< Enable class 5 classifications for port 3
-	unsigned char CL5EN4_Class_5_Enable_Port_4               : 1;   ///< Enable class 5 classifications for port 4
+  unsigned char TMR_Timer_Period_10_ms                     : 4;   ///< Timer used to gather non-critical interrupts; 10ms LSB
+  unsigned char CL5EN1_Class_5_Enable_Port_1               : 1;   ///< Enable class 5 classifications for port 1
+  unsigned char CL5EN2_Class_5_Enable_Port_2               : 1;   ///< Enable class 5 classifications for port 2
+  unsigned char CL5EN3_Class_5_Enable_Port_3               : 1;   ///< Enable class 5 classifications for port 3
+  unsigned char CL5EN4_Class_5_Enable_Port_4               : 1;   ///< Enable class 5 classifications for port 4
 } TPS238x_Class_5_Enable_Timer_Register_t;
 
 #define TMR_MASK                               0x0F   ///< Location of interrupt delay time bits. Value in 10ms increments
@@ -814,10 +814,10 @@ typedef struct {
 ///                      Hardware - Command 29h; 1 data byte; read/write      <br><br>
 /// Allows the user to set the current threshold for disconnection for each port
 typedef struct {
-	unsigned char DCTH1_Disconnect_Current_Threshold_Port_1  : 2;     ///< Port 1: Use TPS238x_Disconnect_Threshold_t values
-	unsigned char DCTH2_Disconnect_Current_Threshold_Port_2  : 2;     ///< Port 2: Use TPS238x_Disconnect_Threshold_t values
-	unsigned char DCTH3_Disconnect_Current_Threshold_Port_3  : 2;     ///< Port 3: Use TPS238x_Disconnect_Threshold_t values
-	unsigned char DCTH4_Disconnect_Current_Threshold_Port_4  : 2;     ///< Port 4: Use TPS238x_Disconnect_Threshold_t values
+  unsigned char DCTH1_Disconnect_Current_Threshold_Port_1  : 2;     ///< Port 1: Use TPS238x_Disconnect_Threshold_t values
+  unsigned char DCTH2_Disconnect_Current_Threshold_Port_2  : 2;     ///< Port 2: Use TPS238x_Disconnect_Threshold_t values
+  unsigned char DCTH3_Disconnect_Current_Threshold_Port_3  : 2;     ///< Port 3: Use TPS238x_Disconnect_Threshold_t values
+  unsigned char DCTH4_Disconnect_Current_Threshold_Port_4  : 2;     ///< Port 4: Use TPS238x_Disconnect_Threshold_t values
 } TPS238x_Disconnect_Threshold_Register_t;
 
 /// Current levels for disconnect threshold. Used in tps_ConfigPort()
@@ -845,10 +845,10 @@ typedef enum {
 /// Allow the user to define the ICUT Threshold for ports 1 and 2. If the ICUT current is exceeded, the TICUT
 ///  timer will begin to count. If timer reaches 0, an ICUT fault will be declared and the port shut down.
 typedef struct {
-	unsigned char ICUT_Current_Threshold_Port_1              : 3;    ///< Use TPS238x_ICUT_Config_t values
-	unsigned char Reserved_8                                 : 1;
-	unsigned char ICUT_Current_Threshold_Port_2              : 3;    ///< Use TPS238x_ICUT_Config_t values
-	unsigned char Reserved_9                                 : 1;
+  unsigned char ICUT_Current_Threshold_Port_1              : 3;    ///< Use TPS238x_ICUT_Config_t values
+  unsigned char Reserved_8                                 : 1;
+  unsigned char ICUT_Current_Threshold_Port_2              : 3;    ///< Use TPS238x_ICUT_Config_t values
+  unsigned char Reserved_9                                 : 1;
 } TPS238x_ICUT21_Config_Regsiter_t;
 
 /// ICUT Current thresholds. Used in tps_ConfigPort()
@@ -877,10 +877,10 @@ typedef enum {
 ///  timer will begin to count. If timer reaches 0, an ICUT fault will be declared and the port shut down.
 
 typedef struct {
-	unsigned char ICUT_Current_Threshold_Port_3              : 3;     ///< Use TPS238x_ICUT_Config_t values 
-	unsigned char Reserved_10                                : 1;
-	unsigned char ICUT_Current_Threshold_Port_4              : 3;     ///< Use TPS238x_ICUT_Config_t values
-	unsigned char Reserved_11                                : 1;
+  unsigned char ICUT_Current_Threshold_Port_3              : 3;     ///< Use TPS238x_ICUT_Config_t values 
+  unsigned char Reserved_10                                : 1;
+  unsigned char ICUT_Current_Threshold_Port_4              : 3;     ///< Use TPS238x_ICUT_Config_t values
+  unsigned char Reserved_11                                : 1;
 } TPS238x_ICUT43_Config_Regsiter_t;
 
 #define ICUT_PORT_3                            0x07
@@ -893,7 +893,7 @@ typedef struct {
 ///             Hardware - Command 2Ch; 1 data byte; read only                 <br><br>
 /// Die temperature
 typedef struct {
-	unsigned char Temp_Value;
+  unsigned char Temp_Value;
 } TPS238x_Temperature_Register_t;
 
 #define CONVERT_TEMP(x)                        (((x*652)-20000)/1000)       ///< Macro to convert result from tps_GetTemperature() into degrees C (float)
@@ -903,16 +903,16 @@ typedef struct {
 /// The system will measure the input voltage around 1/sec. The returned value has an LSB of 3.662mV
 
 typedef union {
-	struct Input_Voltage_Short_t {
-		unsigned short Input_Voltage                         : 14;       ///< Voltage with 3.662 mV lsb
-		unsigned short Reserved_12                           :  2;
-	} Input_Voltage_Short;
+  struct Input_Voltage_Short_t {
+    unsigned short Input_Voltage                         : 14;       ///< Voltage with 3.662 mV lsb
+    unsigned short Reserved_12                           :  2;
+  } Input_Voltage_Short;
 
-	struct Input_Voltage_Char_t {
-		unsigned char  Input_Voltage_LSB                     : 8;
-		unsigned char  Input_Voltage_MSB                     : 6;
-		unsigned char  Reserved_13                           : 2;
-	} Input_Voltage_Char;
+  struct Input_Voltage_Char_t {
+    unsigned char  Input_Voltage_LSB                     : 8;
+    unsigned char  Input_Voltage_MSB                     : 6;
+    unsigned char  Reserved_13                           : 2;
+  } Input_Voltage_Char;
 } TPS238x_Input_Voltage_Register_u;
 
 typedef unsigned short TPS238x_Input_Voltage_t;
@@ -930,16 +930,16 @@ typedef unsigned short TPS238x_Input_Voltage_t;
 /// 14 bit data conversion result of the current for the port.  The LSB is 63.360uA
 
 typedef union {
-	struct Port_Current_Short_t {
-		unsigned short Port_Current                          : 14;    ///< Port current with lsb of 63.360 micro-Amps
-		unsigned short Reserved_14                           :  2;
-	} Port_Current_Short;
+  struct Port_Current_Short_t {
+    unsigned short Port_Current                          : 14;    ///< Port current with lsb of 63.360 micro-Amps
+    unsigned short Reserved_14                           :  2;
+  } Port_Current_Short;
 
-	struct Port_Current_Char_t {
-		unsigned char  Port_Current_LSB                      : 8;
-		unsigned char  Port_Current_MSB                      : 6;
-		unsigned char  Reserved_15                           : 2;
-	} Port_Current_Char;
+  struct Port_Current_Char_t {
+    unsigned char  Port_Current_LSB                      : 8;
+    unsigned char  Port_Current_MSB                      : 6;
+    unsigned char  Reserved_15                           : 2;
+  } Port_Current_Char;
 } TPS238x_Port_Current_Register_u;
 
 typedef unsigned short TPS238x_Port_Current_t;
@@ -956,16 +956,16 @@ typedef unsigned short TPS238x_Port_Current_t;
 ///                Hardware - Command 3Eh; 2 data byte (LSB followed by MSB); read only <br><br>
 ///     14 bit data conversion result of the voltage for the port. The LSB is 3.662mV
 typedef union {
-	struct Port_Voltage_Short_t {
-		unsigned short Port_Voltage                          : 14;       ///< Voltage of port with lsb of 3.662 milli-Volts
-		unsigned short Reserved_16                           :  2;
-	} Port_Voltage_Short;
+  struct Port_Voltage_Short_t {
+    unsigned short Port_Voltage                          : 14;       ///< Voltage of port with lsb of 3.662 milli-Volts
+    unsigned short Reserved_16                           :  2;
+  } Port_Voltage_Short;
 
-	struct Port_Voltage_Char_t {
-		unsigned char  Port_Voltage_LSB                      : 8;
-		unsigned char  Port_Voltage_MSB                      : 6;
-		unsigned char  Reserved_17                           : 2;
-	} Port_Voltage_Char;
+  struct Port_Voltage_Char_t {
+    unsigned char  Port_Voltage_LSB                      : 8;
+    unsigned char  Port_Voltage_MSB                      : 6;
+    unsigned char  Reserved_17                           : 2;
+  } Port_Voltage_Char;
 } TPS238x_Port_Voltage_Register_u;
 
 typedef unsigned short TPS238x_Port_Voltage_t;
@@ -977,11 +977,11 @@ typedef unsigned short TPS238x_Port_Voltage_t;
 ///
 
 typedef struct {
-	unsigned char Reserved_18                                : 4;
-	unsigned char POEP1_Foldback_Curve_Port_1                : 1;
-	unsigned char POEP1_Foldback_Curve_Port_2                : 1;
-	unsigned char POEP1_Foldback_Curve_Port_3                : 1;
-	unsigned char POEP1_Foldback_Curve_Port_4                : 1;
+  unsigned char Reserved_18                                : 4;
+  unsigned char POEP1_Foldback_Curve_Port_1                : 1;
+  unsigned char POEP1_Foldback_Curve_Port_2                : 1;
+  unsigned char POEP1_Foldback_Curve_Port_3                : 1;
+  unsigned char POEP1_Foldback_Curve_Port_4                : 1;
 } TPS238x_PoE_Plus_Register_t;
 
 /// Foldback curve applied to a port when powered on. Used in tps_ConfigPort()
@@ -1001,9 +1001,9 @@ typedef enum {
 ///              Hardware - Command 42h; 1 data byte; read/write   <br><br>
 /// Monitors the I2C clock line in order to detect hung I2C communcations
 typedef struct {
-	unsigned char WDS_Watchdog_Status                        : 1;     ///< Watchdog timer has expired
-	unsigned char IWD_I2C_Watchdog_Disable                   : 4;     ///< Set to IWD_MASK_VALUE to disable I2C watchdog (default)
-	unsigned char Reserved_19                                : 3;
+  unsigned char WDS_Watchdog_Status                        : 1;     ///< Watchdog timer has expired
+  unsigned char IWD_I2C_Watchdog_Disable                   : 4;     ///< Set to IWD_MASK_VALUE to disable I2C watchdog (default)
+  unsigned char Reserved_19                                : 3;
 } TPS238x_I2C_Watchdog_Register_t;
 
 #define WDS                                    0x01
@@ -1016,9 +1016,9 @@ typedef struct {
 ///                        Hardware - Command 45h; 1 data byte; read/write        <br><br>
 /// Fault cool down timer and Gate Pullup Current
 typedef struct {
-	unsigned char Reserved_20                                : 5;
-	unsigned char IGATE_Gate_Pullup_Current                  : 1;     ///< 0=50uA; 1=25uA
-	unsigned char CLDN_Fault_Cool_Down_Timer                 : 2;     ///< Use TPS238x_Cool_Down_Timing_t values
+  unsigned char Reserved_20                                : 5;
+  unsigned char IGATE_Gate_Pullup_Current                  : 1;     ///< 0=50uA; 1=25uA
+  unsigned char CLDN_Fault_Cool_Down_Timer                 : 2;     ///< Use TPS238x_Cool_Down_Timing_t values
 } TPS238x_Cool_Down_Gate_Drive_Register_t;
 
 /// Used in tps_SetTiming() to set the time between a port shut down due to a fault and a subsequent power up
@@ -1048,16 +1048,16 @@ typedef enum {
 ///  not indicate a fault AND at least one detection operation has taken place on the port. The LSB is 11.0966 ohms.
 
 typedef union {
-	struct Port_Detect_Resistance_Short_t {
-		unsigned short Port_Detect_Resistance                : 14;   ///< LSB of 11.0966 ohms
-		unsigned short Detect_Status                         :  2;   ///< Use TPS238x_Detect_Resistance_Status_t values
-	} Port_Detect_Resistance_Short;
+  struct Port_Detect_Resistance_Short_t {
+    unsigned short Port_Detect_Resistance                : 14;   ///< LSB of 11.0966 ohms
+    unsigned short Detect_Status                         :  2;   ///< Use TPS238x_Detect_Resistance_Status_t values
+  } Port_Detect_Resistance_Short;
 
-	struct Detect_Resistance_Char_t {
-		unsigned char  Port_Detect_Resistance_LSB            : 8;
-		unsigned char  Port_Detect_Resistance_MSB            : 6;
-		unsigned char  Detect_Status                         : 2;
-	} Port_Detect_Resistance_Char;
+  struct Detect_Resistance_Char_t {
+    unsigned char  Port_Detect_Resistance_LSB            : 8;
+    unsigned char  Port_Detect_Resistance_MSB            : 6;
+    unsigned char  Detect_Status                         : 2;
+  } Port_Detect_Resistance_Char;
 } TPS238x_Port_Detect_Resistance_Register_u;
 
 typedef unsigned short TPS238x_Port_Detect_Resistance_t;
@@ -1086,16 +1086,16 @@ typedef enum {
 /// A charge is injected into the PI and the resulting voltage differnce is reported. The resulting 12-bit data
 /// conversion has an LSB of 4.884 mV, and is only valid if the status on the port is VDS_STATUS_VALID_MEASUREMENT.
 typedef union {
-	struct Port_Voltage_Difference_Short_t {
-		unsigned short Port_Voltage_Difference               : 12;    ///< LSB of 4.884 mV
-		unsigned short Voltage_Difference_Status             :  4;    ///< Use TPS238x_Detect_Voltage_Difference_Status_t values
-	} Port_Voltage_Difference_Short;
+  struct Port_Voltage_Difference_Short_t {
+    unsigned short Port_Voltage_Difference               : 12;    ///< LSB of 4.884 mV
+    unsigned short Voltage_Difference_Status             :  4;    ///< Use TPS238x_Detect_Voltage_Difference_Status_t values
+  } Port_Voltage_Difference_Short;
 
-	struct Port_Voltage_Difference_Char_t {
-		unsigned char  Port_Voltage_Difference_LSB           : 8;
-		unsigned char  Port_Voltage_Difference_MSB           : 6;
-		unsigned char  Voltage_Difference_Status             : 2;
-	} Port_Voltage_Difference_Char;
+  struct Port_Voltage_Difference_Char_t {
+    unsigned char  Port_Voltage_Difference_LSB           : 8;
+    unsigned char  Port_Voltage_Difference_MSB           : 6;
+    unsigned char  Voltage_Difference_Status             : 2;
+  } Port_Voltage_Difference_Char;
 } TPS238x_Port_Voltage_Difference_Register_u;
 
 typedef unsigned short TPS238x_Port_Voltage_Difference_t;

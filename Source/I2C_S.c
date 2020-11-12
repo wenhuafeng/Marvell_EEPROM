@@ -42,7 +42,7 @@
 
 
 //#define I2C_CLOCK               13
-#define EEPROM_SLA              	0xA0//0xA0
+#define EEPROM_SLA                0xA0//0xA0
 
 
 UINT8 data_received[34];
@@ -52,60 +52,60 @@ UINT8 data mem;
 //========================================================================================================
 void I2C_ISR(void) interrupt 6
 {
-		//TEST
-		u8 i = I2STAT;
-		test[Ctr++] = i;
-		//TEST
-	
+    //TEST
+    u8 i = I2STAT;
+    test[Ctr++] = i;
+    //TEST
+  
     switch (i)
     {
         case 0x00:
             STO = 1;
             break;
-				
+        
         case 0x60:
             AA = 1;
             break;
-				
+        
         case 0x68:
             while(1);
             break;
-				
+        
         case 0x80:
             data_received[data_num++] = I2DAT;
             AA = 1;
             break;
-				
+        
         case 0x88:
-						data_num = 0;
+            data_num = 0;
             data_received[data_num] = I2DAT;
             AA = 1;
             break;
-				
+        
         case 0xA0:
-						data_num = 0x00;
-						AA = 1;
-            break;
-				
-        case 0xA8:
-						I2DAT = IP1717B10Full[data_num++];//data_received[data_num];
+            data_num = 0x00;
             AA = 1;
             break;
-				
+        
+        case 0xA8:
+            I2DAT = IP1717B10Full[data_num++];//data_received[data_num];
+            AA = 1;
+            break;
+        
         case 0xB8:
             I2DAT = IP1717B10Full[data_num++];//data_received[data_num];
             AA = 1;
             break;
-				
+        
         case 0xC0:
             AA = 1;
             break;
-				
+        
         case 0xC8:
             AA = 1;
             break;
     }
-		
+    
     SI = 0;
     while(STO);
 }

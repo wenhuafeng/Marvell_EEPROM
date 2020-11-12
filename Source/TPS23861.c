@@ -12,160 +12,160 @@
 //---------------------------------------------------------------------------------------------
 void DelayUs(INT8U count)
 {
-	u16 i = count;
-	
-	while(i--);
+  u16 i = count;
+  
+  while(i--);
 }
 
 void DelayMs(INT8U count)
 {
-	Timer0_Delay1ms(count);
+  Timer0_Delay1ms(count);
 }
 
 void I2C_Start(void)
 {
-	SDAOUT();
-	DelayUs(5);
-	SDIO = 1;
-	DelayUs(2);
-	SCLK = 1;
-	DelayUs(2);
-	SDIO = 0;
-	DelayUs(2);
-	SCLK = 0;
-	DelayUs(5);
+  SDAOUT();
+  DelayUs(5);
+  SDIO = 1;
+  DelayUs(2);
+  SCLK = 1;
+  DelayUs(2);
+  SDIO = 0;
+  DelayUs(2);
+  SCLK = 0;
+  DelayUs(5);
 }
 
 void I2C_Stop(void)
 {
-	SDAOUT();
-	DelayUs(5);
-	SDIO = 0;
-	SCLK = 1;
-	DelayUs(2);
-	SDIO = 1;
-	DelayUs(5);
-	SCLK = 1;
+  SDAOUT();
+  DelayUs(5);
+  SDIO = 0;
+  SCLK = 1;
+  DelayUs(2);
+  SDIO = 1;
+  DelayUs(5);
+  SCLK = 1;
 }
 
 void I2C_Senddata(INT8U dat)
 {
-	INT8U i;
+  INT8U i;
 
-	SDAOUT();
-	DelayUs(10);
-	for(i = 0; i < 8; i++)
-	{
-		SCLK = 0;
-		SDIO = (BOOLEAN)(dat & 0x80);
-		DelayUs(5);
-		SCLK = 1;
-		DelayUs(2);	
-		dat = dat << 1;
-	}
-	SCLK = 0;
+  SDAOUT();
+  DelayUs(10);
+  for(i = 0; i < 8; i++)
+  {
+    SCLK = 0;
+    SDIO = (BOOLEAN)(dat & 0x80);
+    DelayUs(5);
+    SCLK = 1;
+    DelayUs(2);  
+    dat = dat << 1;
+  }
+  SCLK = 0;
 }
 
 INT8U I2C_Receive(INT8U remaining_bytes)
 {
-	INT8U result = 0;
-	INT8U i,j;
+  INT8U result = 0;
+  INT8U i,j;
 
-	SDAIN();
-	DelayUs(10);
-	for(i=0; i<8; i++)
-	{
-		result = result << 1;
-		SCLK = 0;
-		DelayUs(2);
-		SCLK = 1;
-		DelayUs(5);
-		j = SDA_PORT;
-		if ((j & SDA_NUMBER) == SDA_NUMBER) {
-			result = result + 1;
-		}
-	}
-	SCLK = 0;
+  SDAIN();
+  DelayUs(10);
+  for(i=0; i<8; i++)
+  {
+    result = result << 1;
+    SCLK = 0;
+    DelayUs(2);
+    SCLK = 1;
+    DelayUs(5);
+    j = SDA_PORT;
+    if ((j & SDA_NUMBER) == SDA_NUMBER) {
+      result = result + 1;
+    }
+  }
+  SCLK = 0;
 
-	SDAOUT();
-	DelayUs(5);
-	if (remaining_bytes == 0) {
-		SDIO = 1;
-	} else { 
-		SDIO = 0;
-	}
-	DelayUs(2);
-	SCLK = 1;
-	DelayUs(2);
-	SCLK = 0;
+  SDAOUT();
+  DelayUs(5);
+  if (remaining_bytes == 0) {
+    SDIO = 1;
+  } else { 
+    SDIO = 0;
+  }
+  DelayUs(2);
+  SCLK = 1;
+  DelayUs(2);
+  SCLK = 0;
 
-	return result;
+  return result;
 }
 
 BOOLEAN I2C_Ack(void)
 {
-	BOOLEAN result = 0;
+  BOOLEAN result = 0;
 
-	SDAIN();
-	DelayUs(10);
-	SCLK = 1;
-	DelayUs(2);
-	result = SDIO;
-	SCLK = 0;
+  SDAIN();
+  DelayUs(10);
+  SCLK = 1;
+  DelayUs(2);
+  result = SDIO;
+  SCLK = 0;
 
-	return result;
+  return result;
 }
 
 u8 Write_I2C(u16 slaveAddress, u8 RegisterAddr, u8 *readBuffer, u8 numBytes)
 {
-	//u8 i = 0x00;
-	
-	I2C_Start();
-	I2C_Senddata(slaveAddress << 1);
-	if (I2C_Ack()) {
-			_nop_();
-	}
-	I2C_Senddata(RegisterAddr);
-	if (I2C_Ack()) {
-			_nop_();
-	}
-	while(numBytes--)
-	{
-		I2C_Senddata(*readBuffer++);
-		if (I2C_Ack()) {
-				_nop_();
-		}
-	}
-	I2C_Stop();
-	
-	return (I2C_COMMAND_STARTED);
+  //u8 i = 0x00;
+  
+  I2C_Start();
+  I2C_Senddata(slaveAddress << 1);
+  if (I2C_Ack()) {
+      _nop_();
+  }
+  I2C_Senddata(RegisterAddr);
+  if (I2C_Ack()) {
+      _nop_();
+  }
+  while(numBytes--)
+  {
+    I2C_Senddata(*readBuffer++);
+    if (I2C_Ack()) {
+        _nop_();
+    }
+  }
+  I2C_Stop();
+  
+  return (I2C_COMMAND_STARTED);
 }
 
 u8 Read_I2C(u16 slaveAddress, u8 RegisterAddr, u8 *readBuffer, u8 numBytes)
 {
-	//u8 i = 0x00;
-	
-	I2C_Start();
-	I2C_Senddata(slaveAddress << 1);
-	if (I2C_Ack()) {
-			_nop_();
-	}
-	I2C_Senddata(RegisterAddr);
-	if (I2C_Ack()) {
-			_nop_();
-	}
-	I2C_Start();
-	I2C_Senddata((slaveAddress << 1)|Read);
-	if (I2C_Ack()) {
-			_nop_();
-	}
-	while(numBytes--)
-	{
-		*readBuffer++ = I2C_Receive(numBytes);
-	}
-	I2C_Stop();
-	
-	return (I2C_COMMAND_STARTED);
+  //u8 i = 0x00;
+  
+  I2C_Start();
+  I2C_Senddata(slaveAddress << 1);
+  if (I2C_Ack()) {
+      _nop_();
+  }
+  I2C_Senddata(RegisterAddr);
+  if (I2C_Ack()) {
+      _nop_();
+  }
+  I2C_Start();
+  I2C_Senddata((slaveAddress << 1)|Read);
+  if (I2C_Ack()) {
+      _nop_();
+  }
+  while(numBytes--)
+  {
+    *readBuffer++ = I2C_Receive(numBytes);
+  }
+  I2C_Stop();
+  
+  return (I2C_COMMAND_STARTED);
 }
 
 /**************************************************************************************************************************************************
@@ -173,19 +173,19 @@ u8 Read_I2C(u16 slaveAddress, u8 RegisterAddr, u8 *readBuffer, u8 numBytes)
 **************************************************************************************************************************************************/
 u8 tps_WriteI2CReg (u16 i2cAddress, u8 registerAddress, u8 writeValue)
 {
-		u8 rtn;
-		
-		rtn = Write_I2C (i2cAddress, registerAddress, &writeValue, 1);
-		
+    u8 rtn;
+    
+    rtn = Write_I2C (i2cAddress, registerAddress, &writeValue, 1);
+    
     return (rtn);
 }
 
 u8 tps_WriteI2CMultiple (u16 i2cAddress, u8 registerAddress, u8 *writeValues, u8 numWriteBytes)
 {
-		u8 rtn;
-		
-		rtn = Write_I2C (i2cAddress, registerAddress, writeValues, numWriteBytes);
-		
+    u8 rtn;
+    
+    rtn = Write_I2C (i2cAddress, registerAddress, writeValues, numWriteBytes);
+    
     return (rtn);
 }
 
@@ -203,7 +203,7 @@ u8 tps_ReadI2CReg (u16 i2cAddress, u8 registerAddress, u8 *readValue)
 
 u8 tps_ReadI2CMultiple (u16 i2cAddress, u8 registerAddress, u8 *readValue, u8 numReadBytes)
 {
-		u8 rtn;
+    u8 rtn;
 
     rtn = Read_I2C(i2cAddress, registerAddress, readValue, numReadBytes);
 
@@ -258,9 +258,9 @@ void tpsReset (void)
     //P2OUT &= ~BIT0;
     //__delay_cycles(1000);
     //P2OUT |=  BIT0;
-		TPS23861_RST = 0;
-		DelayMs(10);
-		TPS23861_RST = 1;
+    TPS23861_RST = 0;
+    DelayMs(10);
+    TPS23861_RST = 1;
 }
 
 
@@ -407,8 +407,8 @@ static TPS238x_System_Port_Map_t TPS_PortMap[TPS_MAX_SYSTEM_PORTS] =  {{TPS_PORT
 **************************************************************************************************************************************************/
 uint8_t tps_RegisterPort (uint16_t device_i2c_address, TPS238x_PortNum_t devicePortNum)
 {
-		uint8_t i;
-		uint8_t found = 0xff;
+    uint8_t i;
+    uint8_t found = 0xff;
 
     for (i=0; i<TPS_MAX_SYSTEM_PORTS; i++)
     {
@@ -487,7 +487,7 @@ TPS238x_PortNum_t tps_GetDevicePortNum (uint8_t systemPortNum)
 **************************************************************************************************************************************************/
 uint8_t tps_GetSystemPortNumber (uint16_t device_i2c_address, TPS238x_PortNum_t devicePortNum)
 {
-		uint8_t i;
+    uint8_t i;
 
     for (i=0; i<TPS_MAX_SYSTEM_PORTS; i++)
     {
@@ -523,11 +523,11 @@ uint8_t tps_GetSystemPortNumber (uint16_t device_i2c_address, TPS238x_PortNum_t 
 **************************************************************************************************************************************************/
 uint8_t tps_SetI2CAddresses (uint8_t temp_i2cAddress, uint8_t numDevices, uint8_t *list_ofAddresses, TPS238x_On_Off_t *list_ofAutoMode)
 {
-		uint8_t rtn = I2C_OPERATION_SUCCESSFUL;
-		unsigned char current_address;
-		uint8_t value;
-		uint8_t i;
-		uint8_t newAutoBitSetting;
+    uint8_t rtn = I2C_OPERATION_SUCCESSFUL;
+    unsigned char current_address;
+    uint8_t value;
+    uint8_t i;
+    uint8_t newAutoBitSetting;
 
     ////uart_puts ("\r\nSetting I2C Addresses\r\n\n");
     rtn = tps_WriteI2CReg (TPS238X_BROADCAST_ADDRESS, TPS238X_UNLOCK_CODE, temp_i2cAddress);
@@ -539,7 +539,7 @@ uint8_t tps_SetI2CAddresses (uint8_t temp_i2cAddress, uint8_t numDevices, uint8_
 
         if (list_ofAutoMode[i] == TPS_ON)
         {
-        	value |= AUTO_BIT;
+          value |= AUTO_BIT;
         }
 
         temp_i2cAddress |= (list_ofAddresses[i] & 0x08);
@@ -554,7 +554,7 @@ uint8_t tps_SetI2CAddresses (uint8_t temp_i2cAddress, uint8_t numDevices, uint8_
     // Datasheet lists a maximum program time of 100 ms for the EEPROM
     // We will wait 110 ms with 8 MHz count to allow the EEPROM change to take effect
     //__delay_cycles (880000);
-		DelayMs(110);
+    DelayMs(110);
 
     // Verify that each device responds to it's new address. Read back the Address Register
     for (i=0; i<numDevices; i++)
@@ -578,7 +578,7 @@ uint8_t tps_SetI2CAddresses (uint8_t temp_i2cAddress, uint8_t numDevices, uint8_
         {
             ////uart_puts ("\r                                           \r");
             ////uart_puts ("I2C Address Mismatch\r\n");
-        	rtn |= TPS_ERR_I2C_ADDRESS_MISMATCH;
+          rtn |= TPS_ERR_I2C_ADDRESS_MISMATCH;
         }
     }
 
@@ -617,8 +617,8 @@ uint8_t tps_SetI2CAddresses (uint8_t temp_i2cAddress, uint8_t numDevices, uint8_
 **************************************************************************************************************************************************/
 uint8_t tps_SetDeviceInterruptMask (uint8_t device_i2c_address, TPS238X_Interrupt_Mask_Register_t intMask, uint8_t intDelayTime)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
   
     rtn = tps_WriteI2CReg (device_i2c_address, TPS238X_INTERRUPT_MASK_COMMAND, *(uint8_t*)&intMask);
 
@@ -658,8 +658,8 @@ uint8_t tps_SetDeviceInterruptMask (uint8_t device_i2c_address, TPS238X_Interrup
 **************************************************************************************************************************************************/
 uint8_t tps_GetDeviceInterruptMask (uint8_t device_i2c_address, TPS238X_Interrupt_Mask_Register_t *intMask, uint8_t *intDelayTime)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
     rtn = tps_ReadI2CReg (device_i2c_address, TPS238X_INTERRUPT_MASK_COMMAND, (uint8_t *)intMask);
 
@@ -687,14 +687,14 @@ uint8_t tps_GetDeviceInterruptMask (uint8_t device_i2c_address, TPS238X_Interrup
 *
 * @param[in]   device_i2c_address  7 bit I2C address of the TPS238x part being controlled (do not included R/W bit)
 * @param[out]  *status             Address of a TPS238X_Interrupt_Register_t variable that will receive the current interrupt status
-*	                                    PEC_Power_Enable_Change          
-*	                                    PGC_Power_Good_Change            
-*	                                    DISF_Disconnect_Event            
-*	                                    DETC_Detection_Cycle             
-*	                                    CLASC_Classification_Cycle       
-*	                                    IFAULT_ICUT_ILIM_Fault           
-*	                                    INRF_Inrush_Fault                
-*	                                    SUPF_Supply_Event_Fault          
+*                                      PEC_Power_Enable_Change          
+*                                      PGC_Power_Good_Change            
+*                                      DISF_Disconnect_Event            
+*                                      DETC_Detection_Cycle             
+*                                      CLASC_Classification_Cycle       
+*                                      IFAULT_ICUT_ILIM_Fault           
+*                                      INRF_Inrush_Fault                
+*                                      SUPF_Supply_Event_Fault          
 *
 * @return  uint8_t    (I2C_SUCCESSFUL or I2C error status)
 *
@@ -705,8 +705,8 @@ uint8_t tps_GetDeviceInterruptMask (uint8_t device_i2c_address, TPS238X_Interrup
 **************************************************************************************************************************************************/
 uint8_t tps_GetDeviceInterruptStatus (uint8_t device_i2c_address, TPS238X_Interrupt_Register_t *status)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
     rtn = tps_ReadI2CReg (device_i2c_address, TPS238X_INTERRUPT_COMMAND, &value);
 
@@ -753,19 +753,19 @@ uint8_t tps_GetDeviceInterruptStatus (uint8_t device_i2c_address, TPS238X_Interr
 **************************************************************************************************************************************************/
 uint8_t tps_GetDeviceAllInterruptEvents (uint8_t device_i2c_address,
                                          TPS238x_On_Off_t clearEvent,
-	       	                             TPS238x_Ports_t *powerEnablePortEvents,
-		                                 TPS238x_Ports_t *powerGoodPortEvents,
-		                                 TPS238x_Ports_t *detectionPortEvents,
-		                                 TPS238x_Ports_t *classificationPortEvents,
+                                        TPS238x_Ports_t *powerEnablePortEvents,
+                                     TPS238x_Ports_t *powerGoodPortEvents,
+                                     TPS238x_Ports_t *detectionPortEvents,
+                                     TPS238x_Ports_t *classificationPortEvents,
                                          TPS238x_Ports_t *icutPortEvents,
-		                                 TPS238x_Ports_t *disconnectPortEvents,
-		                                 TPS238x_Ports_t *inrushPortEvents,
-		                                 TPS238x_Ports_t *ilimPortEvents,
-		                                 TPS238X_Supply_Event_Register_t *supplyEvents)
+                                     TPS238x_Ports_t *disconnectPortEvents,
+                                     TPS238x_Ports_t *inrushPortEvents,
+                                     TPS238x_Ports_t *ilimPortEvents,
+                                     TPS238X_Supply_Event_Register_t *supplyEvents)
 {
-		uint8_t rtn;
-		uint8_t value;
-		uint8_t value_out;
+    uint8_t rtn;
+    uint8_t value;
+    uint8_t value_out;
 
     // Assure that the interrupt pin is released
 //    tps_ResetInterruptPin (device_i2c_address);
@@ -836,10 +836,10 @@ uint8_t tps_GetDeviceAllInterruptEvents (uint8_t device_i2c_address,
 uint8_t tps_GetPortDetectClassStatus (uint8_t systemPortNum, TPS238x_Detection_Status_t *detectionStatus,
                                       TPS238x_Classification_Status_t *classificationStatus)
 {
-		uint8_t rtn;
-		uint8_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
-		uint8_t command = TPS238X_PORT_1_STATUS_COMMAND + (uint8_t) portNum - 1;   // Determine which Port Status command has been requested
+    uint8_t rtn;
+    uint8_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t command = TPS238X_PORT_1_STATUS_COMMAND + (uint8_t) portNum - 1;   // Determine which Port Status command has been requested
 
     rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), command, &value);
 
@@ -873,10 +873,10 @@ uint8_t tps_GetPortDetectClassStatus (uint8_t systemPortNum, TPS238x_Detection_S
 **************************************************************************************************************************************************/
 uint8_t tps_GetPortDetectionStatus (uint8_t systemPortNum, TPS238x_Detection_Status_t *detectionStatus)
 {
-		uint8_t rtn;
-		uint8_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
-		uint8_t command = TPS238X_PORT_1_STATUS_COMMAND + (uint8_t) portNum - 1;   // Determine which Port Status command has been requested
+    uint8_t rtn;
+    uint8_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t command = TPS238X_PORT_1_STATUS_COMMAND + (uint8_t) portNum - 1;   // Determine which Port Status command has been requested
 
     rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), command, &value);
 
@@ -907,10 +907,10 @@ uint8_t tps_GetPortDetectionStatus (uint8_t systemPortNum, TPS238x_Detection_Sta
 **************************************************************************************************************************************************/
 uint8_t tps_GetPortClassificationStatus (uint8_t systemPortNum, TPS238x_Classification_Status_t *classificationStatus)
 {
-		uint8_t rtn;
-		uint8_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
-		uint8_t command = TPS238X_PORT_1_STATUS_COMMAND + (uint8_t) portNum - 1;   // Determine which Port Status command has been requested
+    uint8_t rtn;
+    uint8_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t command = TPS238X_PORT_1_STATUS_COMMAND + (uint8_t) portNum - 1;   // Determine which Port Status command has been requested
 
     rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), command, &value);
 
@@ -943,9 +943,9 @@ uint8_t tps_GetPortClassificationStatus (uint8_t systemPortNum, TPS238x_Classifi
 **************************************************************************************************************************************************/
 uint8_t tps_GetDevicePowerStatus (uint8_t device_i2c_address, TPS238x_Ports_t *powerEnablePorts, TPS238x_Ports_t *powerGoodPorts)
 {
-		uint8_t rtn;
-		uint8_t value;
-		uint8_t value_out;
+    uint8_t rtn;
+    uint8_t value;
+    uint8_t value_out;
 
     rtn = tps_ReadI2CReg (device_i2c_address, TPS238X_POWER_STATUS_COMMAND, &value);
 
@@ -980,8 +980,8 @@ uint8_t tps_GetDevicePowerStatus (uint8_t device_i2c_address, TPS238x_Ports_t *p
 **************************************************************************************************************************************************/
 uint8_t tps_GetDevicePowerEnableStatus (uint8_t device_i2c_address, TPS238x_Ports_t *powerEnablePorts)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
     rtn = tps_ReadI2CReg (device_i2c_address, TPS238X_POWER_STATUS_COMMAND, &value);
 
@@ -1013,9 +1013,9 @@ uint8_t tps_GetDevicePowerEnableStatus (uint8_t device_i2c_address, TPS238x_Port
 **************************************************************************************************************************************************/
 uint8_t tps_GetPortPowerEnableStatus (uint8_t systemPortNum)
 {
-		uint8_t rtn;
-		uint8_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t rtn;
+    uint8_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
 
     rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_POWER_STATUS_COMMAND, &value);
     if (rtn != I2C_SUCCESSFUL)
@@ -1051,8 +1051,8 @@ uint8_t tps_GetPortPowerEnableStatus (uint8_t systemPortNum)
 **************************************************************************************************************************************************/
 uint8_t tps_GetDevicePowerGoodStatus (uint8_t device_i2c_address, TPS238x_Ports_t *powerGoodPorts)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
     rtn = tps_ReadI2CReg (device_i2c_address, TPS238X_POWER_STATUS_COMMAND, &value);
 
@@ -1084,9 +1084,9 @@ uint8_t tps_GetDevicePowerGoodStatus (uint8_t device_i2c_address, TPS238x_Ports_
 **************************************************************************************************************************************************/
 uint8_t tps_GetPortPowerGoodStatus (uint8_t systemPortNum)
 {
-		uint8_t rtn;
-		uint8_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t rtn;
+    uint8_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
 
     rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_POWER_STATUS_COMMAND, &value);
     if (rtn != I2C_SUCCESSFUL)
@@ -1123,7 +1123,7 @@ uint8_t tps_GetPortPowerGoodStatus (uint8_t systemPortNum)
 **************************************************************************************************************************************************/
 uint8_t tps_SetDevicePowerOn (uint8_t device_i2c_address, TPS238x_Ports_t portsPoweredOn)
 {
-		uint8_t rtn;
+    uint8_t rtn;
 
     rtn = tps_WriteI2CReg (device_i2c_address, TPS238X_POWER_ENABLE_COMMAND, *(uint8_t*)&portsPoweredOn);
 
@@ -1149,8 +1149,8 @@ uint8_t tps_SetDevicePowerOn (uint8_t device_i2c_address, TPS238x_Ports_t portsP
 **************************************************************************************************************************************************/
 uint8_t tps_SetDevicePowerOff (uint8_t device_i2c_address, TPS238x_Ports_t portsPoweredOff)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
     value = *(uint8_t*)&portsPoweredOff << POWER_OFF_SHIFT;
     rtn = tps_WriteI2CReg (device_i2c_address, TPS238X_POWER_ENABLE_COMMAND, value);
@@ -1176,9 +1176,9 @@ uint8_t tps_SetDevicePowerOff (uint8_t device_i2c_address, TPS238x_Ports_t ports
 **************************************************************************************************************************************************/
 uint8_t tps_SetPortPower (uint8_t systemPortNum, TPS238x_On_Off_t on_off)
 {
-		uint8_t rtn;
-		uint8_t value;
-		uint8_t portBit = tps_GetDevicePortNum(systemPortNum);
+    uint8_t rtn;
+    uint8_t value;
+    uint8_t portBit = tps_GetDevicePortNum(systemPortNum);
 
     portBit = CONVERT_PORT_NUM(portBit);
 
@@ -1215,8 +1215,8 @@ uint8_t tps_SetPortPower (uint8_t systemPortNum, TPS238x_On_Off_t on_off)
 **************************************************************************************************************************************************/
 uint8_t tps_GetDeviceDetectionEnable (uint8_t device_i2c_address, TPS238x_Ports_t *detectPorts)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
     rtn = tps_ReadI2CReg (device_i2c_address, TPS238X_DETECT_CLASS_ENABLE_COMMAND, &value);
 
@@ -1244,8 +1244,8 @@ uint8_t tps_GetDeviceDetectionEnable (uint8_t device_i2c_address, TPS238x_Ports_
 **************************************************************************************************************************************************/
 uint8_t tps_GetPortDetectionEnable (uint8_t systemPortNum)
 {
-		uint8_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
 
     tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_DETECT_CLASS_ENABLE_COMMAND, &value);
 
@@ -1280,8 +1280,8 @@ uint8_t tps_GetPortDetectionEnable (uint8_t systemPortNum)
 **************************************************************************************************************************************************/
 uint8_t tps_GetDeviceClassificationEnable (uint8_t device_i2c_address, TPS238x_Ports_t *classPorts)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
     rtn = tps_ReadI2CReg (device_i2c_address, TPS238X_DETECT_CLASS_ENABLE_COMMAND, &value);
 
@@ -1309,8 +1309,8 @@ uint8_t tps_GetDeviceClassificationEnable (uint8_t device_i2c_address, TPS238x_P
 **************************************************************************************************************************************************/
 uint8_t tps_GetPortClassificationEnable (uint8_t systemPortNum)
 {
-		uint8_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
 
     tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_DETECT_CLASS_ENABLE_COMMAND, &value);
 
@@ -1345,8 +1345,8 @@ uint8_t tps_GetPortClassificationEnable (uint8_t systemPortNum)
 **************************************************************************************************************************************************/
 uint8_t tps_GetDeviceDetectClassEnable (uint8_t device_i2c_address, TPS238x_Ports_t *detectPorts, TPS238x_Ports_t *classPorts)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
     rtn = tps_ReadI2CReg (device_i2c_address, TPS238X_DETECT_CLASS_ENABLE_COMMAND, &value);
 
@@ -1379,8 +1379,8 @@ uint8_t tps_GetDeviceDetectClassEnable (uint8_t device_i2c_address, TPS238x_Port
 **************************************************************************************************************************************************/
 uint8_t tps_SetDeviceDetectClassEnable (uint8_t device_i2c_address, TPS238x_Ports_t detectPorts, TPS238x_Ports_t classPorts)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
     value = (*(uint8_t*)&classPorts << CLASS_SHIFT) | *(uint8_t*)&detectPorts;
     rtn = tps_WriteI2CReg (device_i2c_address, TPS238X_DETECT_CLASS_ENABLE_COMMAND, value);
@@ -1409,9 +1409,9 @@ uint8_t tps_SetDeviceDetectClassEnable (uint8_t device_i2c_address, TPS238x_Port
 **************************************************************************************************************************************************/
 uint8_t tps_SetPortDetectClassEnable (uint8_t systemPortNum, TPS238x_On_Off_t on_off_detect, TPS238x_On_Off_t on_off_class)
 {
-		uint8_t rtn;
-		uint8_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t rtn;
+    uint8_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
 
     rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_DETECT_CLASS_ENABLE_COMMAND, &value);
 
@@ -1451,8 +1451,8 @@ uint8_t tps_SetPortDetectClassEnable (uint8_t systemPortNum, TPS238x_On_Off_t on
 **************************************************************************************************************************************************/
 uint8_t tps_GetDeviceDisconnectEnable (uint8_t device_i2c_address, TPS238x_Ports_t *disconnectPorts)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
     rtn = tps_ReadI2CReg (device_i2c_address, TPS238X_DISCONNECT_ENABLE_COMMAND, &value);
 
@@ -1490,8 +1490,8 @@ uint8_t tps_SetDeviceDisconnectEnable (uint8_t device_i2c_address, TPS238x_Ports
                                        TPS238x_Disconnect_Threshold_t disconnectThreshold2, TPS238x_Disconnect_Threshold_t disconnectThreshold3,
                                        TPS238x_Disconnect_Threshold_t disconnectThreshold4)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
     rtn = tps_WriteI2CReg (device_i2c_address, TPS238X_DISCONNECT_ENABLE_COMMAND, *(uint8_t*)&disconnectPorts);
 
@@ -1525,11 +1525,11 @@ uint8_t tps_SetDeviceDisconnectEnable (uint8_t device_i2c_address, TPS238x_Ports
 **************************************************************************************************************************************************/
 uint8_t tps_SetPortDisconnectEnable (uint8_t systemPortNum, TPS238x_On_Off_t on_off, TPS238x_Disconnect_Threshold_t disconnectThreshold)
 {
-		uint8_t rtn;
-		uint8_t disconnectValue;
-		uint8_t thresholdValue;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
-		uint16_t i2cAddress = tps_GetDeviceI2CAddress(systemPortNum);
+    uint8_t rtn;
+    uint8_t disconnectValue;
+    uint8_t thresholdValue;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint16_t i2cAddress = tps_GetDeviceI2CAddress(systemPortNum);
 
     rtn = tps_ReadI2CReg (i2cAddress, TPS238X_DISCONNECT_ENABLE_COMMAND, &disconnectValue);
 
@@ -1584,8 +1584,8 @@ uint8_t tps_SetDeviceTiming (uint8_t device_i2c_address, TPS238x_ILIM_Timing_t i
                              TPS238x_TICUT_Timing_t icutTiming, TPS238x_TDIS_Timing_t disconnectTiming,
                              TPS238x_Cool_Down_Timing_t coolDownFaultTiming)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
     value = (ilimTiming << TLIM_SHIFT) | ( startTiming << TSTART_SHIFT) |
             (icutTiming << TICUT_SHIFT) | (disconnectTiming << TDIS_SHIFT);
@@ -1617,8 +1617,8 @@ uint8_t tps_SetDeviceTiming (uint8_t device_i2c_address, TPS238x_ILIM_Timing_t i
 **************************************************************************************************************************************************/
 uint8_t tps_FastShutdownDeviceEnable (uint8_t device_i2c_address, TPS238x_Ports_t ports)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
     value = *(uint8_t*)&ports << FSE_SHIFT;
 
@@ -1645,9 +1645,9 @@ uint8_t tps_FastShutdownDeviceEnable (uint8_t device_i2c_address, TPS238x_Ports_
 **************************************************************************************************************************************************/
 uint8_t tps_FastShutdownPortEnable (uint8_t systemPortNum, TPS238x_On_Off_t on_off)
 {
-		uint8_t rtn;
-		uint8_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t rtn;
+    uint8_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
 
     rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_PORT_POWER_PRIORITY_COMMAND, &value);
 
@@ -1697,9 +1697,9 @@ uint8_t tps_ConfigPort (uint8_t systemPortNum, TPS238x_Operating_Modes_t operati
                         TPS238x_Disconnect_Threshold_t disconnectThreshold, TPS238x_ICUT_Config_t icutCurrentThreshold,
                         TPS238x_POE_Plus_Foldback_t poepFoldbackCurve)
 {
-		uint8_t rtn;
-		uint8_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t rtn;
+    uint8_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
 
     // Load the Operating Mode
     rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_OPERATING_MODE_COMMAND, &value);
@@ -1805,8 +1805,8 @@ uint8_t tps_ConfigPort (uint8_t systemPortNum, TPS238x_Operating_Modes_t operati
 uint8_t tps_ConfigDevice4Pair (uint8_t device_i2c_address, TPS238x_On_Off_t on_off_Port12, TPS238x_Four_Pair_t disconnectModePort12,
                                TPS238x_On_Off_t on_off_Port34, TPS238x_Four_Pair_t disconnectModePort34)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
     value = ((uint8_t)on_off_Port12 << _4P12EN_SHIFT) |
           ((uint8_t)disconnectModePort12 << _4P12DIS_SHIFT) |
@@ -1838,9 +1838,9 @@ uint8_t tps_ConfigDevice4Pair (uint8_t device_i2c_address, TPS238x_On_Off_t on_o
 **************************************************************************************************************************************************/
 uint8_t tps_SetPortOpMode (uint8_t systemPortNum, TPS238x_Operating_Modes_t operatingMode)
 {
-		uint8_t rtn;
-		uint8_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t rtn;
+    uint8_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
 
     // Load the Operating Mode
     rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_OPERATING_MODE_COMMAND, &value);
@@ -1878,8 +1878,8 @@ uint8_t tps_SetPortOpMode (uint8_t systemPortNum, TPS238x_Operating_Modes_t oper
 uint8_t tps_SetDeviceOpMode (uint8_t device_i2c_address, TPS238x_Operating_Modes_t operatingMode1, TPS238x_Operating_Modes_t operatingMode2,
                              TPS238x_Operating_Modes_t operatingMode3, TPS238x_Operating_Modes_t operatingMode4)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
     // Load the Operating Mode
     value = (((uint8_t)operatingMode4 << 6) | ((uint8_t)operatingMode3 << 4) | ((uint8_t)operatingMode2 << 2) | ((uint8_t)operatingMode1));             // Each port gets 2 bits
@@ -1909,8 +1909,8 @@ uint8_t tps_SetDeviceOpMode (uint8_t device_i2c_address, TPS238x_Operating_Modes
 **************************************************************************************************************************************************/
 uint8_t tps_RestartDeviceDetection (uint8_t device_i2c_address, TPS238x_Ports_t detectPorts)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
     value = *(uint8_t*)&detectPorts;
     rtn = tps_WriteI2CReg (device_i2c_address, TPS238X_DETECT_CLASS_RESTART_COMMAND, value);
@@ -1936,9 +1936,9 @@ uint8_t tps_RestartDeviceDetection (uint8_t device_i2c_address, TPS238x_Ports_t 
 **************************************************************************************************************************************************/
 uint8_t tps_RestartPortDetection (uint8_t systemPortNum)
 {
-		uint8_t rtn;
-		uint8_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t rtn;
+    uint8_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
 
     value = CONVERT_PORT_NUM(portNum);
 
@@ -1969,8 +1969,8 @@ uint8_t tps_RestartPortDetection (uint8_t systemPortNum)
 **************************************************************************************************************************************************/
 uint8_t tps_RestartDeviceClassification (uint8_t device_i2c_address, TPS238x_Ports_t classPorts)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
     value = (*(uint8_t*)&classPorts << CLASS_SHIFT);
     rtn = tps_WriteI2CReg (device_i2c_address, TPS238X_DETECT_CLASS_RESTART_COMMAND, value);
@@ -1995,9 +1995,9 @@ uint8_t tps_RestartDeviceClassification (uint8_t device_i2c_address, TPS238x_Por
 **************************************************************************************************************************************************/
 uint8_t tps_RestartPortClassification (uint8_t systemPortNum)
 {
-		uint8_t rtn;
-		uint8_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t rtn;
+    uint8_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
 
     value = (CONVERT_PORT_NUM(portNum) << CLASS_SHIFT);
 
@@ -2028,8 +2028,8 @@ uint8_t tps_RestartPortClassification (uint8_t systemPortNum)
 **************************************************************************************************************************************************/
 uint8_t tps_RestartDeviceDetectClass (uint8_t device_i2c_address, TPS238x_Ports_t detectPorts, TPS238x_Ports_t classPorts)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
     value = (*(uint8_t *)&classPorts << CLASS_SHIFT) | *(uint8_t *)&detectPorts;
     rtn = tps_WriteI2CReg (device_i2c_address, TPS238X_DETECT_CLASS_RESTART_COMMAND, value);
@@ -2054,9 +2054,9 @@ uint8_t tps_RestartDeviceDetectClass (uint8_t device_i2c_address, TPS238x_Ports_
 **************************************************************************************************************************************************/
 uint8_t tps_ResetDevicePort (uint8_t systemPortNum)
 {
-		uint8_t rtn;
-		uint8_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t rtn;
+    uint8_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
 
     value = CONVERT_PORT_NUM(portNum);
 
@@ -2081,9 +2081,9 @@ uint8_t tps_ResetDevicePort (uint8_t systemPortNum)
 **************************************************************************************************************************************************/
 uint8_t tps_ResetPort (uint8_t systemPortNum)
 {
-		uint8_t rtn;
-		uint8_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t rtn;
+    uint8_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
 
     value = CONVERT_PORT_NUM(portNum);
 
@@ -2119,22 +2119,22 @@ uint8_t tps_ResetPort (uint8_t systemPortNum)
 **************************************************************************************************************************************************/
 uint8_t tps_GetPortMeasurements (uint8_t systemPortNum, uint16_t *voltage, uint16_t *current)
 {
-		uint8_t rtn;
-		uint8_t command;
-		uint8_t value_t[2];
-		uint16_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t rtn;
+    uint8_t command;
+    uint8_t value_t[2];
+    uint16_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
 
     command = TPS238X_PORT_1_CURRENT_COMMAND + (4 * ((uint8_t) portNum - 1));
     rtn = tps_ReadI2CMultiple (tps_GetDeviceI2CAddress(systemPortNum), command, value_t, 2);
-		value = (value_t[1] << 8);
-		value |= value_t[0];
+    value = (value_t[1] << 8);
+    value |= value_t[0];
     *current = value & TPS2368X_PORT_CURRENT_MASK_SHORT;
 
     command = TPS238X_PORT_1_VOLTAGE_COMMAND + (4 * ((uint8_t) portNum - 1));
     rtn += tps_ReadI2CMultiple (tps_GetDeviceI2CAddress(systemPortNum), command, value_t, 2);
-		value = (value_t[1] << 8);
-		value |= value_t[0];
+    value = (value_t[1] << 8);
+    value |= value_t[0];
     *voltage = value & TPS2368X_PORT_VOLTAGE_MASK_SHORT;
 
     return (rtn);
@@ -2158,13 +2158,13 @@ uint8_t tps_GetPortMeasurements (uint8_t systemPortNum, uint16_t *voltage, uint1
 **************************************************************************************************************************************************/
 uint8_t tps_GetDeviceInputVoltage (uint8_t device_i2c_address, uint16_t *voltage)
 {
-		uint8_t rtn;
-		uint8_t value_t[2];
-		uint16_t value;
+    uint8_t rtn;
+    uint8_t value_t[2];
+    uint16_t value;
 
     rtn = tps_ReadI2CMultiple (device_i2c_address, TPS238X_INPUT_VOLTAGE_COMMAND, value_t, 2);
-		value = (value_t[1] << 8);
-		value |= value_t[0];
+    value = (value_t[1] << 8);
+    value |= value_t[0];
     *voltage = value & TPS2368X_INPUT_VOLTAGE_MASK_SHORT;
 
     return (rtn);
@@ -2187,7 +2187,7 @@ uint8_t tps_GetDeviceInputVoltage (uint8_t device_i2c_address, uint16_t *voltage
 **************************************************************************************************************************************************/
 uint8_t tps_GetDeviceTemperature (uint8_t device_i2c_address, uint8_t *temperature)
 {
-		uint8_t rtn;
+    uint8_t rtn;
 
     rtn = tps_ReadI2CReg (device_i2c_address, TPS238X_TEMPERATURE_COMMAND, (uint8_t *)temperature);
 
@@ -2216,10 +2216,10 @@ uint8_t tps_GetDeviceTemperature (uint8_t device_i2c_address, uint8_t *temperatu
 uint8_t tps_GetPortDetectResistance (uint8_t systemPortNum, uint16_t *detectResistance,
                                      TPS238x_Detect_Resistance_Status_t *detectResistanceStatus)
 {
-		uint8_t rtn;
-		uint16_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
-		uint8_t command = TPS238X_PORT_1_DETECT_RESISTANCE_COMMAND + (2 * ((uint8_t)portNum - 1));         // 2 bytes for each port
+    uint8_t rtn;
+    uint16_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t command = TPS238X_PORT_1_DETECT_RESISTANCE_COMMAND + (2 * ((uint8_t)portNum - 1));         // 2 bytes for each port
 
     rtn = tps_ReadI2CMultiple (tps_GetDeviceI2CAddress(systemPortNum), command, (uint8_t *)&value, 2);
 
@@ -2253,10 +2253,10 @@ uint8_t tps_GetPortDetectResistance (uint8_t systemPortNum, uint16_t *detectResi
 uint8_t tps_GetPortDetectVoltageDifference (uint8_t systemPortNum, uint16_t *detectVoltageDiff,
                                             TPS238x_Detect_Voltage_Difference_Status_t *detectVoltageDiffStatus)
 {
-		uint8_t rtn;
-		uint16_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
-		uint8_t command = TPS238X_PORT_1_DETECT_VOLTAGE_DIFF_COMMAND + (2 * ((uint8_t)portNum - 1));         // 2 bytes for each port
+    uint8_t rtn;
+    uint16_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t command = TPS238X_PORT_1_DETECT_VOLTAGE_DIFF_COMMAND + (2 * ((uint8_t)portNum - 1));         // 2 bytes for each port
 
     rtn = tps_ReadI2CMultiple (tps_GetDeviceI2CAddress(systemPortNum), command, (uint8_t *)&value, 2);
 
@@ -2299,8 +2299,8 @@ uint8_t tps_ReleasePort (uint8_t systemPortNum)
 
 uint8_t tps_ResetInterruptPin (uint8_t device_i2c_address)
 {
-		uint8_t rtn;
-		const uint8_t value = CLINP;
+    uint8_t rtn;
+    const uint8_t value = CLINP;
 
     // Load the Operating Mode
     rtn = tps_WriteI2CReg (device_i2c_address, TPS238X_RESET_COMMAND, value);
@@ -2313,77 +2313,77 @@ uint8_t tps_ResetInterruptPin (uint8_t device_i2c_address)
 
 uint8_t tps_SetPortICUT(uint8_t systemPortNum,TPS238x_ICUT_Config_t icutCurrentThreshold)
 {
-		uint8_t rtn;
-		uint8_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t rtn;
+    uint8_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
 
-		// Load the ICUT Current Threshold
-		if ((uint8_t) portNum <= 2)
-		{
-			rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT21_CONFIGURATION_COMMAND, &value);
-			ICUT12 = value;
-			if ((uint8_t) portNum == 2)
-			{
-				value &= ~(ICUT_THRESHOLD_MASK << ICUT_PORT_2_SHIFT);                      // Clear old value for this port number
-				value |= ((uint8_t)icutCurrentThreshold << ICUT_PORT_2_SHIFT);             // Each port gets 3 bits
-			}
-			else
-			{
-				value &= ~(ICUT_THRESHOLD_MASK << ICUT_PORT_1_SHIFT);                      // Clear old value for this port number
-				value |= ((uint8_t)icutCurrentThreshold << ICUT_PORT_1_SHIFT);             // Each port gets 3 bits
-			}
+    // Load the ICUT Current Threshold
+    if ((uint8_t) portNum <= 2)
+    {
+      rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT21_CONFIGURATION_COMMAND, &value);
+      ICUT12 = value;
+      if ((uint8_t) portNum == 2)
+      {
+        value &= ~(ICUT_THRESHOLD_MASK << ICUT_PORT_2_SHIFT);                      // Clear old value for this port number
+        value |= ((uint8_t)icutCurrentThreshold << ICUT_PORT_2_SHIFT);             // Each port gets 3 bits
+      }
+      else
+      {
+        value &= ~(ICUT_THRESHOLD_MASK << ICUT_PORT_1_SHIFT);                      // Clear old value for this port number
+        value |= ((uint8_t)icutCurrentThreshold << ICUT_PORT_1_SHIFT);             // Each port gets 3 bits
+      }
 
-			rtn += tps_WriteI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT21_CONFIGURATION_COMMAND, value);
-			rtn += tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT21_CONFIGURATION_COMMAND, &value);
-			ICUT12 = value;
-		}
-		else
-		{
-			rtn += tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT43_CONFIGURATION_COMMAND, &value);
-			ICUT34 = value;
-			if ((uint8_t) portNum == 4)
-			{
-				value &= ~(ICUT_THRESHOLD_MASK << ICUT_PORT_4_SHIFT);                      // Clear old value for this port number
-				value |= ((uint8_t)icutCurrentThreshold << ICUT_PORT_4_SHIFT);             // Each port gets 3 bits
-			}
-			else
-			{
-				value &= ~(ICUT_THRESHOLD_MASK << ICUT_PORT_3_SHIFT);                      // Clear old value for this port number
-				value |= ((uint8_t)icutCurrentThreshold << ICUT_PORT_3_SHIFT);             // Each port gets 3 bits
-			}
-			rtn += tps_WriteI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT43_CONFIGURATION_COMMAND, value);
-			rtn += tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT43_CONFIGURATION_COMMAND, &value);
-			ICUT34 = value;
-		}
-		return (rtn);
+      rtn += tps_WriteI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT21_CONFIGURATION_COMMAND, value);
+      rtn += tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT21_CONFIGURATION_COMMAND, &value);
+      ICUT12 = value;
+    }
+    else
+    {
+      rtn += tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT43_CONFIGURATION_COMMAND, &value);
+      ICUT34 = value;
+      if ((uint8_t) portNum == 4)
+      {
+        value &= ~(ICUT_THRESHOLD_MASK << ICUT_PORT_4_SHIFT);                      // Clear old value for this port number
+        value |= ((uint8_t)icutCurrentThreshold << ICUT_PORT_4_SHIFT);             // Each port gets 3 bits
+      }
+      else
+      {
+        value &= ~(ICUT_THRESHOLD_MASK << ICUT_PORT_3_SHIFT);                      // Clear old value for this port number
+        value |= ((uint8_t)icutCurrentThreshold << ICUT_PORT_3_SHIFT);             // Each port gets 3 bits
+      }
+      rtn += tps_WriteI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT43_CONFIGURATION_COMMAND, value);
+      rtn += tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT43_CONFIGURATION_COMMAND, &value);
+      ICUT34 = value;
+    }
+    return (rtn);
 }
 
 uint8_t tps_GetPortICUT(uint8_t systemPortNum)
 {
-		uint8_t value;
-		uint8_t rtn;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
-		
-		if ((uint8_t) portNum <= 2)
-		{
-			rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT21_CONFIGURATION_COMMAND, &value);
-			ICUT12 = value;
-		}
-		else
-		{
-			rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT43_CONFIGURATION_COMMAND, &value);
-			ICUT34 = value;
+    uint8_t value;
+    uint8_t rtn;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    
+    if ((uint8_t) portNum <= 2)
+    {
+      rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT21_CONFIGURATION_COMMAND, &value);
+      ICUT12 = value;
+    }
+    else
+    {
+      rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT43_CONFIGURATION_COMMAND, &value);
+      ICUT34 = value;
 
-		}
+    }
 
-		return (rtn);
+    return (rtn);
 }
 
 uint8_t tps_SetPortILIM(uint8_t systemPortNum, TPS238x_POE_Plus_Foldback_t poepFoldbackCurve)
 {
-		uint8_t rtn;
-		uint8_t value;
-		uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
+    uint8_t rtn;
+    uint8_t value;
+    uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
 
     // Load the PoE Plus Setting
     rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_POE_PLUS_COMMAND, &value);
@@ -2398,22 +2398,22 @@ uint8_t tps_SetPortILIM(uint8_t systemPortNum, TPS238x_POE_Plus_Foldback_t poepF
 
 uint8_t tps_GetPortILIM(uint8_t systemPortNum)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
-		rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_POE_PLUS_COMMAND, &value);
-		ILIM = value;
+    rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_POE_PLUS_COMMAND, &value);
+    ILIM = value;
 
-		return(rtn);
+    return(rtn);
 }
 
 
 
 uint8_t tps_SetDeviceTwoEventEnable (uint8_t device_i2c_address,TPS238x_Two_Event_t twoEvent1,TPS238x_Two_Event_t twoEvent2,
-		TPS238x_Two_Event_t twoEvent3,TPS238x_Two_Event_t twoEvent4)
+    TPS238x_Two_Event_t twoEvent3,TPS238x_Two_Event_t twoEvent4)
 {
-		uint8_t rtn;
-		uint8_t value;
+    uint8_t rtn;
+    uint8_t value;
 
     value = (twoEvent4 << 6) | (twoEvent3 << 4) | (twoEvent2 << 2) | twoEvent1;
     rtn = tps_WriteI2CReg (device_i2c_address, TPS238X_TWO_EVENT_CLASSIFICATION_COMMAND, value);
@@ -2493,35 +2493,35 @@ uint8_t tps_SetPortPoEP(uint8_t systemPortNum,
 /*************************************************************************************************************************************************/
 void TPS23861_Init(void)
 {
-		u8 i;
-		
-		tpsReset();
-		
-		// Check the standard i2c address to discover the part. If not found, program the address(es)
+    u8 i;
+    
+    tpsReset();
+    
+    // Check the standard i2c address to discover the part. If not found, program the address(es)
     for (i=0; i < NUM_OF_TPS23861; i++)
     {
-				rtn = tps_ReadI2CReg (i2cAddList[i], TPS238X_I2C_SLAVE_ADDRESS_COMMAND, &current_address);
+        rtn = tps_ReadI2CReg (i2cAddList[i], TPS238X_I2C_SLAVE_ADDRESS_COMMAND, &current_address);
 
-				oldAutoBitSetting = (current_address & AUTO_BIT);  //save the old AUTO bit setting
+        oldAutoBitSetting = (current_address & AUTO_BIT);  //save the old AUTO bit setting
 
-				current_address &= 0x7F;
+        current_address &= 0x7F;
 
-				if (autoMode[i] == TPS_ON) {
-					current_address |= AUTO_BIT;
-				}
-				if ((current_address != (oldAutoBitSetting | i2cAddList[i])) || (rtn != I2C_SUCCESSFUL)) {
-					addressChangeNeeded = TRUE;
-				}
+        if (autoMode[i] == TPS_ON) {
+          current_address |= AUTO_BIT;
+        }
+        if ((current_address != (oldAutoBitSetting | i2cAddList[i])) || (rtn != I2C_SUCCESSFUL)) {
+          addressChangeNeeded = TRUE;
+        }
     }
 
-		// If the address does not match standard, OR a NACK is received,
+    // If the address does not match standard, OR a NACK is received,
     //  reprogram the address(es) of the TPS23861's
-		if(addressChangeNeeded == TRUE)
-		{
-				tps_SetI2CAddresses (0x14, NUM_OF_TPS23861, i2cAddList, autoMode);
-		}
-		
-		sysPortNum1 = tps_RegisterPort (i2cAddList[0], TPS238X_PORT_1);
+    if(addressChangeNeeded == TRUE)
+    {
+        tps_SetI2CAddresses (0x14, NUM_OF_TPS23861, i2cAddList, autoMode);
+    }
+    
+    sysPortNum1 = tps_RegisterPort (i2cAddList[0], TPS238X_PORT_1);
     sysPortNum2 = tps_RegisterPort (i2cAddList[0], TPS238X_PORT_2);
     sysPortNum3 = tps_RegisterPort (i2cAddList[0], TPS238X_PORT_3);
     sysPortNum4 = tps_RegisterPort (i2cAddList[0], TPS238X_PORT_4);
@@ -2556,7 +2556,7 @@ void TPS23861_Init(void)
 
     //tps_SetDeviceOpMode (i2cAddList[0], OPERATING_MODE_MANUAL, OPERATING_MODE_MANUAL, OPERATING_MODE_MANUAL, OPERATING_MODE_MANUAL);
     //tps_SetDeviceOpMode (i2cAddList[1], OPERATING_MODE_MANUAL, OPERATING_MODE_MANUAL, OPERATING_MODE_MANUAL, OPERATING_MODE_MANUAL);
-		tps_SetDeviceOpMode (i2cAddList[0], OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUTO);
+    tps_SetDeviceOpMode (i2cAddList[0], OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUTO);
     tps_SetDeviceOpMode (i2cAddList[1], OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUTO);
 
     //Set two event classification if a class 4 classification occurs
@@ -2569,25 +2569,25 @@ void TPS23861_Init(void)
     // Power off all ports in case we are re-running this application without physically shutting down ports from previous run
     tps_SetDevicePowerOff(i2cAddList[0], inactivePorts[0]);
     tps_SetDevicePowerOff(i2cAddList[1], inactivePorts[1]);
-		
-		//tps_SetDevicePowerOn(i2cAddList[0], inactivePorts[0]);
-		//tps_SetDevicePowerOn(i2cAddList[1], inactivePorts[1]);
-		//tps_SetPortPower(sysPortNum1,TPS_ON);
-		//tps_SetPortPower(sysPortNum8,TPS_ON);
-		//tps_SetPortPower(sysPortNum1,TPS_OFF);
-		//tps_SetPortPower(sysPortNum8,TPS_OFF);
+    
+    //tps_SetDevicePowerOn(i2cAddList[0], inactivePorts[0]);
+    //tps_SetDevicePowerOn(i2cAddList[1], inactivePorts[1]);
+    //tps_SetPortPower(sysPortNum1,TPS_ON);
+    //tps_SetPortPower(sysPortNum8,TPS_ON);
+    //tps_SetPortPower(sysPortNum1,TPS_OFF);
+    //tps_SetPortPower(sysPortNum8,TPS_OFF);
 
     // Set up all ports for Disconnect Enable at 7.5 mA
     tps_SetDeviceDisconnectEnable (i2cAddList[0], inactivePorts[0], DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP);
     tps_SetDeviceDisconnectEnable (i2cAddList[1], inactivePorts[1], DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP);
-		
-		printf ("\r POE 23861 - Hit 'S' to start");
+    
+    printf ("\r POE 23861 - Hit 'S' to start");
     printf ("Welcome to the POE 23861 - Auto Mode\r\n");
 }
-		
+    
 void TPS23861_Run(void)
 {
-		IntFlag = 1;    // Set IntFlag to clear SUPF Fault at POR
+    IntFlag = 1;    // Set IntFlag to clear SUPF Fault at POR
 
     //while (1)
     //{
@@ -2604,372 +2604,372 @@ void TPS23861_Run(void)
 
             for (devNum = 0; devNum < NUM_OF_TPS23861; devNum++)
             {
-								// Get the interrupt and interrupt statuses
-								rtn =  tps_GetDeviceInterruptStatus (i2cAddList[devNum], &intStatus);
-								rtn =  tps_GetDeviceAllInterruptEvents (i2cAddList[devNum], TPS_ON, &powerEnablePortEvents, &powerGoodPortEvents, &detectionPortEvents,
-																		&classificationPortEvents, &icutPortEvents, &disconnectPortEvents,
-																		&inrushPortEvents, &ilimPortEvents, &supplyEvents);
+                // Get the interrupt and interrupt statuses
+                rtn =  tps_GetDeviceInterruptStatus (i2cAddList[devNum], &intStatus);
+                rtn =  tps_GetDeviceAllInterruptEvents (i2cAddList[devNum], TPS_ON, &powerEnablePortEvents, &powerGoodPortEvents, &detectionPortEvents,
+                                    &classificationPortEvents, &icutPortEvents, &disconnectPortEvents,
+                                    &inrushPortEvents, &ilimPortEvents, &supplyEvents);
 
-								// Did we have a new Detection Event?
-								if (intStatus.DETC_Detection_Cycle) {
-									uint8_t target = detectionPortEvents;
-									uint8_t i;
+                // Did we have a new Detection Event?
+                if (intStatus.DETC_Detection_Cycle) {
+                  uint8_t target = detectionPortEvents;
+                  uint8_t i;
 
-									for (i=TPS238X_PORT_1; i<=TPS238X_PORT_4; i++)
-									{
-										if (target & 0x1) {
-											sysPortNum = tps_GetSystemPortNumber (i2cAddList[devNum], (TPS238x_PortNum_t)i);
+                  for (i=TPS238X_PORT_1; i<=TPS238X_PORT_4; i++)
+                  {
+                    if (target & 0x1) {
+                      sysPortNum = tps_GetSystemPortNumber (i2cAddList[devNum], (TPS238x_PortNum_t)i);
 
-											rtn = tps_GetPortDetectClassStatus (sysPortNum, &detectStatus, &classStatus);
-											if (detectStatus == DETECT_RESIST_VALID) { // Valid
-												// Set the valid port as inactive, so it will stop doing Detections
-												inactivePorts[devNum] &= ~(CONVERT_PORT_NUM(i));
+                      rtn = tps_GetPortDetectClassStatus (sysPortNum, &detectStatus, &classStatus);
+                      if (detectStatus == DETECT_RESIST_VALID) { // Valid
+                        // Set the valid port as inactive, so it will stop doing Detections
+                        inactivePorts[devNum] &= ~(CONVERT_PORT_NUM(i));
 
-												// Start a classification for this port
-												tps_SetPortDetectClassEnable (sysPortNum, TPS_OFF, TPS_ON);
-												
-												printf ("\nDetection Event Port %X\r", (i+(devNum * 4)));
-												printf (" - Detect Status: %X\r\n", detectStatus);
-											}
-										}
-										target >>= 1;
-									}
-								}
+                        // Start a classification for this port
+                        tps_SetPortDetectClassEnable (sysPortNum, TPS_OFF, TPS_ON);
+                        
+                        printf ("\nDetection Event Port %X\r", (i+(devNum * 4)));
+                        printf (" - Detect Status: %X\r\n", detectStatus);
+                      }
+                    }
+                    target >>= 1;
+                  }
+                }
 
-								// Did we have a new Classification Event?
-								if (intStatus.CLASC_Classification_Cycle)
-								{
-									uint8_t target = classificationPortEvents;
-									uint8_t i;
+                // Did we have a new Classification Event?
+                if (intStatus.CLASC_Classification_Cycle)
+                {
+                  uint8_t target = classificationPortEvents;
+                  uint8_t i;
 
-									for (i=TPS238X_PORT_1; i<=TPS238X_PORT_4; i++)
-									{
-										if (target & 0x1)
-										{
-											sysPortNum = tps_GetSystemPortNumber (i2cAddList[devNum], (TPS238x_PortNum_t)i);
+                  for (i=TPS238X_PORT_1; i<=TPS238X_PORT_4; i++)
+                  {
+                    if (target & 0x1)
+                    {
+                      sysPortNum = tps_GetSystemPortNumber (i2cAddList[devNum], (TPS238x_PortNum_t)i);
 
-											rtn = tps_GetPortDetectClassStatus (sysPortNum, &detectStatus, &classStatus);
-											
-											printf ("\nClassification Event Port %X",(i + (devNum * 4)));
-											printf (" - Classification Status: %X\r\n",classStatus);
-											
-											if ((classStatus != CLASS_OVERCURRENT) &&
-												(classStatus != CLASS_UNKNOWN) &&
-												(classStatus != CLASS_MISMATCH))
-											{
-												// Power ON!!
-												rtn = tps_SetPortPower (sysPortNum, TPS_ON);
-												printf ("Turn on Power - Port %X\r\n",(i + (devNum * 4)));
-												
-												failClassOnce[i-1] = 0;              // Subtract 1 as this register is 0 index based, but Port Numbers are 1 index based
+                      rtn = tps_GetPortDetectClassStatus (sysPortNum, &detectStatus, &classStatus);
+                      
+                      printf ("\nClassification Event Port %X",(i + (devNum * 4)));
+                      printf (" - Classification Status: %X\r\n",classStatus);
+                      
+                      if ((classStatus != CLASS_OVERCURRENT) &&
+                        (classStatus != CLASS_UNKNOWN) &&
+                        (classStatus != CLASS_MISMATCH))
+                      {
+                        // Power ON!!
+                        rtn = tps_SetPortPower (sysPortNum, TPS_ON);
+                        printf ("Turn on Power - Port %X\r\n",(i + (devNum * 4)));
+                        
+                        failClassOnce[i-1] = 0;              // Subtract 1 as this register is 0 index based, but Port Numbers are 1 index based
 
-												if(classStatus == CLASS_4)
-												{
-													tps_SetPortPoEP(sysPortNum, _2X_ILIM_FOLDBACK_CURVE, ICUT_686_MILLIAMP);
-												}
-												else
-												{
-													tps_SetPortPoEP(sysPortNum, _1X_ILIM_FOLDBACK_CURVE, ICUT_374_MILLIAMP);
-												}
-											}
-											else
-											{
-												if (failClassOnce[i-1] == 0)        // Subtract 1 as this register is 0 index based, but Port Numbers are 1 index based
-												{
-													// Restart Classification
-													tps_SetPortDetectClassEnable (sysPortNum, TPS_OFF, TPS_ON);
-													failClassOnce[i-1] = 1;         // Subtract 1 as this register is 0 index based, but Port Numbers are 1 index based
-												}
-												else
-												{
-													// Set the valid port as inactive, so it will attempt another Detection sequence
-													inactivePorts[devNum] |=  (CONVERT_PORT_NUM(i));
+                        if(classStatus == CLASS_4)
+                        {
+                          tps_SetPortPoEP(sysPortNum, _2X_ILIM_FOLDBACK_CURVE, ICUT_686_MILLIAMP);
+                        }
+                        else
+                        {
+                          tps_SetPortPoEP(sysPortNum, _1X_ILIM_FOLDBACK_CURVE, ICUT_374_MILLIAMP);
+                        }
+                      }
+                      else
+                      {
+                        if (failClassOnce[i-1] == 0)        // Subtract 1 as this register is 0 index based, but Port Numbers are 1 index based
+                        {
+                          // Restart Classification
+                          tps_SetPortDetectClassEnable (sysPortNum, TPS_OFF, TPS_ON);
+                          failClassOnce[i-1] = 1;         // Subtract 1 as this register is 0 index based, but Port Numbers are 1 index based
+                        }
+                        else
+                        {
+                          // Set the valid port as inactive, so it will attempt another Detection sequence
+                          inactivePorts[devNum] |=  (CONVERT_PORT_NUM(i));
 
-													failClassOnce[i-1] = 0;         // Subtract 1 as this register is 0 index based, but Port Numbers are 1 index based
+                          failClassOnce[i-1] = 0;         // Subtract 1 as this register is 0 index based, but Port Numbers are 1 index based
 
-												}
-											}
-										}
-										target >>= 1;
-									}
-								}
+                        }
+                      }
+                    }
+                    target >>= 1;
+                  }
+                }
 
-								// Did we have a new Disconnection Event?
-								if (intStatus.DISF_Disconnect_Event)
-								{
-									uint8_t target = disconnectPortEvents;
-									uint8_t i;
+                // Did we have a new Disconnection Event?
+                if (intStatus.DISF_Disconnect_Event)
+                {
+                  uint8_t target = disconnectPortEvents;
+                  uint8_t i;
 
-									// Set all of the disconnected ports as inactive
-									*(uint8_t *)&inactivePorts[devNum] |= target;
+                  // Set all of the disconnected ports as inactive
+                  *(uint8_t *)&inactivePorts[devNum] |= target;
 
-									PrintPower = 1;
+                  PrintPower = 1;
 
-									for (i=TPS238X_PORT_1; i<=TPS238X_PORT_4; i++)
-									{
-										if (target & 0x1)
-										{
-											printf ("\nDisconnection Event Port %X\r\n",(i + (devNum * 4)));
-										}
-										target >>= 1;
-									}
-								}
+                  for (i=TPS238X_PORT_1; i<=TPS238X_PORT_4; i++)
+                  {
+                    if (target & 0x1)
+                    {
+                      printf ("\nDisconnection Event Port %X\r\n",(i + (devNum * 4)));
+                    }
+                    target >>= 1;
+                  }
+                }
 
-								// Did we have a new Power Enable Event?
-								if (intStatus.PEC_Power_Enable_Change)
-								{
-									uint8_t target = powerEnablePortEvents;
-									uint8_t i;
+                // Did we have a new Power Enable Event?
+                if (intStatus.PEC_Power_Enable_Change)
+                {
+                  uint8_t target = powerEnablePortEvents;
+                  uint8_t i;
 
-									for (i=TPS238X_PORT_1; i<=TPS238X_PORT_4; i++)
-									{
-										if (target & 0x1)
-										{
-											sysPortNum = tps_GetSystemPortNumber (i2cAddList[devNum], (TPS238x_PortNum_t)i);
+                  for (i=TPS238X_PORT_1; i<=TPS238X_PORT_4; i++)
+                  {
+                    if (target & 0x1)
+                    {
+                      sysPortNum = tps_GetSystemPortNumber (i2cAddList[devNum], (TPS238x_PortNum_t)i);
 
-											powerEnable = tps_GetPortPowerEnableStatus (sysPortNum);
+                      powerEnable = tps_GetPortPowerEnableStatus (sysPortNum);
 
-											if (powerEnable == TPS_ON)          // Valid
-											{
-												printf ("Power Enable Event Port %X\r\n",(i + (devNum * 4)));
-												PrintPower = 1;
-											}
-											else
-											{
-												printf ("Power Disable Event Port %X\r\n",(i + (devNum * 4)));
-											}
-										}
-										target >>= 1;
-									}
-								}
+                      if (powerEnable == TPS_ON)          // Valid
+                      {
+                        printf ("Power Enable Event Port %X\r\n",(i + (devNum * 4)));
+                        PrintPower = 1;
+                      }
+                      else
+                      {
+                        printf ("Power Disable Event Port %X\r\n",(i + (devNum * 4)));
+                      }
+                    }
+                    target >>= 1;
+                  }
+                }
 
-								// Did we have a new Power Good Event?
-								if (intStatus.PGC_Power_Good_Change)
-								{
-									uint8_t target = powerGoodPortEvents;
-									uint8_t i;
+                // Did we have a new Power Good Event?
+                if (intStatus.PGC_Power_Good_Change)
+                {
+                  uint8_t target = powerGoodPortEvents;
+                  uint8_t i;
 
-									for (i=TPS238X_PORT_1; i<=TPS238X_PORT_4; i++)
-									{
-										if (target & 0x1)
-										{
-											sysPortNum = tps_GetSystemPortNumber (i2cAddList[devNum], (TPS238x_PortNum_t)i);
+                  for (i=TPS238X_PORT_1; i<=TPS238X_PORT_4; i++)
+                  {
+                    if (target & 0x1)
+                    {
+                      sysPortNum = tps_GetSystemPortNumber (i2cAddList[devNum], (TPS238x_PortNum_t)i);
 
-											powerGood = tps_GetPortPowerGoodStatus (sysPortNum);
+                      powerGood = tps_GetPortPowerGoodStatus (sysPortNum);
 
-											if (powerGood == TPS_ON)          // Valid
-											{
-												printf ("Power Good Event Port %X\r\n",(i + (devNum * 4)));
-												PrintPower = 1;
-											}
-											else
-											{
-												printf ("Power No Longer Good Event Port %X\r\n",(i + (devNum * 4)));
-											}
-										}
-										target >>= 1;
-									}
-								}
+                      if (powerGood == TPS_ON)          // Valid
+                      {
+                        printf ("Power Good Event Port %X\r\n",(i + (devNum * 4)));
+                        PrintPower = 1;
+                      }
+                      else
+                      {
+                        printf ("Power No Longer Good Event Port %X\r\n",(i + (devNum * 4)));
+                      }
+                    }
+                    target >>= 1;
+                  }
+                }
 
-								//Fault conditions
-								if(intStatus.SUPF_Supply_Event_Fault)
-								{
-									uint8_t *temp = (uint8_t *)&supplyEvents;
-									uint8_t target = *temp;
+                //Fault conditions
+                if(intStatus.SUPF_Supply_Event_Fault)
+                {
+                  uint8_t *temp = (uint8_t *)&supplyEvents;
+                  uint8_t target = *temp;
 
-									if(target & 0x10)
-									{
-										printf("VPWR undervlotage occurred\r\n");
-									}
-									else if (target & 0x20)
-									{
-										printf("VDD undervlotage occurred\r\n");
-									}
+                  if(target & 0x10)
+                  {
+                    printf("VPWR undervlotage occurred\r\n");
+                  }
+                  else if (target & 0x20)
+                  {
+                    printf("VDD undervlotage occurred\r\n");
+                  }
 
-									else if (target & 0x80)
-									{
-										printf("Thermal shutdown occurred\r\n");
-									}
-								}
+                  else if (target & 0x80)
+                  {
+                    printf("Thermal shutdown occurred\r\n");
+                  }
+                }
 
-								if(intStatus.INRF_Inrush_Fault)
-								{
-									uint8_t target = inrushPortEvents;
-									uint8_t i;
+                if(intStatus.INRF_Inrush_Fault)
+                {
+                  uint8_t target = inrushPortEvents;
+                  uint8_t i;
 
-									// Set all of the start fault ports as inactive
-									*(uint8_t *)&inactivePorts[devNum] |= target;
+                  // Set all of the start fault ports as inactive
+                  *(uint8_t *)&inactivePorts[devNum] |= target;
 
-									for (i = TPS238X_PORT_1; i <= TPS238X_PORT_4; i++)
-									{
-										if (target & 0x1)
-										{
-											printf ("Start Fault Port %X\r\n",(i + (4 * devNum)));
-										}
-										target >>= 1;
-									}
-								}
+                  for (i = TPS238X_PORT_1; i <= TPS238X_PORT_4; i++)
+                  {
+                    if (target & 0x1)
+                    {
+                      printf ("Start Fault Port %X\r\n",(i + (4 * devNum)));
+                    }
+                    target >>= 1;
+                  }
+                }
 
-								if(intStatus.IFAULT_ICUT_ILIM_Fault)
-								{
-										uint8_t targetIcut = icutPortEvents;
-										uint8_t targetIlim = ilimPortEvents;
-										uint8_t i;
+                if(intStatus.IFAULT_ICUT_ILIM_Fault)
+                {
+                    uint8_t targetIcut = icutPortEvents;
+                    uint8_t targetIlim = ilimPortEvents;
+                    uint8_t i;
 
-										// Set all of the ICUT fault fault ports as inactive
-										*(uint8_t *)&inactivePorts[devNum] |= icutPortEvents;
+                    // Set all of the ICUT fault fault ports as inactive
+                    *(uint8_t *)&inactivePorts[devNum] |= icutPortEvents;
 
-										// Set all of the ICUT fault fault ports as inactive
-										*(uint8_t *)&inactivePorts[devNum] |= ilimPortEvents;
+                    // Set all of the ICUT fault fault ports as inactive
+                    *(uint8_t *)&inactivePorts[devNum] |= ilimPortEvents;
 
-										for (i = TPS238X_PORT_1; i <= TPS238X_PORT_4; i++)
-										{
-												if (targetIcut & 0x01)
-												{
-													printf("ICUT Fault Port %X\r\n",(i + (4 * devNum)));
-												}
+                    for (i = TPS238X_PORT_1; i <= TPS238X_PORT_4; i++)
+                    {
+                        if (targetIcut & 0x01)
+                        {
+                          printf("ICUT Fault Port %X\r\n",(i + (4 * devNum)));
+                        }
 
-												if(targetIlim & 0x01)
-												{
-													printf("ILIM Fault Port %X\r\n",(i + (4 * devNum)));
-												}
+                        if(targetIlim & 0x01)
+                        {
+                          printf("ILIM Fault Port %X\r\n",(i + (4 * devNum)));
+                        }
 
-												targetIcut >>= 1;
-												targetIlim >>= 1;
-										}
-								}
+                        targetIcut >>= 1;
+                        targetIlim >>= 1;
+                    }
+                }
             }
         }  // if (IntFlag)
 
-				PrintPower = 1;
+        PrintPower = 1;
         if (PrintPower)
         {
             PrintPower = 0;
 
             tps_GetDeviceInputVoltage (i2cAddList[0], &voltage);
             outNum = ((uint32_t)voltage * 3662) / 1000;
-						printf ("Input Voltage: %ld mV \r\n",outNum);
+            printf ("Input Voltage: %ld mV \r\n",outNum);
 
             tps_GetDeviceTemperature (i2cAddList[0], &temperature);
             outNum = CONVERT_TEMP((uint32_t)temperature);
-						printf ("Device Temperature: %ld degrees C\r\n",outNum);
+            printf ("Device Temperature: %ld degrees C\r\n",outNum);
 
             if (!(inactivePorts[0] & PORT_1_VALUE))
             {
                 tps_GetPortMeasurements (sysPortNum1, &voltage, &current);
                 outNum = ((uint32_t)voltage * 3662) / 1000;
-								printf ("Port 1 Voltage: %ldmV \r\n",outNum);
+                printf ("Port 1 Voltage: %ldmV \r\n",outNum);
                 outNum = ((uint32_t)current * 62260) / 1000000;
-								printf ("Port 1 Current: %ldmA \r\n",outNum);
+                printf ("Port 1 Current: %ldmA \r\n",outNum);
             }
 
             if (!(inactivePorts[0] & PORT_2_VALUE))
             {
                 tps_GetPortMeasurements (sysPortNum2, &voltage, &current);
                 outNum = ((uint32_t)voltage * 3662) / 1000;
-								printf ("Port 2 Voltage: %ldmV \r\n",outNum);
+                printf ("Port 2 Voltage: %ldmV \r\n",outNum);
                 outNum = ((uint32_t)current * 62260) / 1000000;
-								printf ("Port 2 Current: %ldmA \r\n",outNum);
+                printf ("Port 2 Current: %ldmA \r\n",outNum);
             }
 
             if (!(inactivePorts[0] & PORT_3_VALUE))
             {
                 tps_GetPortMeasurements (sysPortNum3, &voltage, &current);
                 outNum = ((uint32_t)voltage * 3662) / 1000;
-								printf ("Port 3 Voltage: %ldmV \r\n",outNum);
+                printf ("Port 3 Voltage: %ldmV \r\n",outNum);
                 outNum = ((uint32_t)current * 62260) / 1000000;
-								printf ("Port 3 Current: %ldmA \r\n",outNum);
+                printf ("Port 3 Current: %ldmA \r\n",outNum);
             }
 
             if (!(inactivePorts[0] & PORT_4_VALUE))
             {
                 tps_GetPortMeasurements (sysPortNum4, &voltage, &current);
                 outNum = ((uint32_t)voltage * 3662) / 1000;
-								printf ("Port 4 Voltage: %ldmV \r\n",outNum);
+                printf ("Port 4 Voltage: %ldmV \r\n",outNum);
                 outNum = ((uint32_t)current * 62260) / 1000000;
-								printf ("Port 4 Current: %ldmA \r\n",outNum);
+                printf ("Port 4 Current: %ldmA \r\n",outNum);
             }
 
             if (!(inactivePorts[1] & PORT_1_VALUE))
             {
                 tps_GetPortMeasurements (sysPortNum5, &voltage, &current);
                 outNum = ((uint32_t)voltage * 3662) / 1000;
-								printf ("Port 5 Voltage: %ldmV \r\n",outNum);
+                printf ("Port 5 Voltage: %ldmV \r\n",outNum);
                 outNum = ((uint32_t)current * 62260) / 1000000;
-								printf ("Port 5 Current: %ldmA \r\n",outNum);
+                printf ("Port 5 Current: %ldmA \r\n",outNum);
             }
 
             if (!(inactivePorts[1] & PORT_2_VALUE))
             {
                 tps_GetPortMeasurements (sysPortNum6, &voltage, &current);
                 outNum = ((uint32_t)voltage * 3662) / 1000;
-								printf ("Port 6 Voltage: %ldmV \r\n",outNum);
+                printf ("Port 6 Voltage: %ldmV \r\n",outNum);
                 outNum = ((uint32_t)current * 62260) / 1000000;
-								printf ("Port 6 Current: %ldmA \r\n",outNum);
+                printf ("Port 6 Current: %ldmA \r\n",outNum);
             }
 
             if (!(inactivePorts[1] & PORT_3_VALUE))
             {
                 tps_GetPortMeasurements (sysPortNum7, &voltage, &current);
                 outNum = ((uint32_t)voltage * 3662) / 1000;
-								printf ("Port 7 Voltage: %ldmV \r\n",outNum);
+                printf ("Port 7 Voltage: %ldmV \r\n",outNum);
                 outNum = ((uint32_t)current * 62260) / 1000000;
-								printf ("Port 7 Current: %ldmA \r\n",outNum);
+                printf ("Port 7 Current: %ldmA \r\n",outNum);
             }
 
             if (!(inactivePorts[1] & PORT_4_VALUE))
             {
                 tps_GetPortMeasurements (sysPortNum8, &voltage, &current);
                 outNum = ((uint32_t)voltage * 3662) / 1000;
-								printf ("Port 8 Voltage: %ldmV \r\n",outNum);
+                printf ("Port 8 Voltage: %ldmV \r\n",outNum);
                 outNum = ((uint32_t)current * 62260) / 1000000;
-								printf ("Port 8 Current: %ldmA \r\n",outNum);
+                printf ("Port 8 Current: %ldmA \r\n",outNum);
             }
 
 //#ifdef DETAILED_STATUS
 #if 0
             for (devNum=0; devNum < NUM_OF_TPS23861; devNum++)
             {
-								// read current value of all event registers (Do not clear)
-								rtn =  tps_GetDeviceAllInterruptEvents (i2cAddList[devNum], TPS_OFF, &powerEnablePortEvents, &powerGoodPortEvents, &detectionPortEvents,
-																		&classificationPortEvents, &icutPortEvents, &disconnectPortEvents,
-																		&inrushPortEvents, &ilimPortEvents, &supplyEvents);
+                // read current value of all event registers (Do not clear)
+                rtn =  tps_GetDeviceAllInterruptEvents (i2cAddList[devNum], TPS_OFF, &powerEnablePortEvents, &powerGoodPortEvents, &detectionPortEvents,
+                                    &classificationPortEvents, &icutPortEvents, &disconnectPortEvents,
+                                    &inrushPortEvents, &ilimPortEvents, &supplyEvents);
 
-								uart_puts ("\n---- Event Registers -----Dev : ");
-								uartPutHex (devNum);
-								uart_puts ("----- \r\n0x");
-								uartPutHex ((powerGoodPortEvents<<4) | powerEnablePortEvents);
-								uart_puts ("   0x");
-								uartPutHex ((classificationPortEvents << 4) | detectionPortEvents);
-								uart_puts ("   0x");
-								uartPutHex ((disconnectPortEvents << 4) | icutPortEvents);
-								uart_puts ("   0x");
-								uartPutHex ((ilimPortEvents << 4) | inrushPortEvents);
-								uart_puts ("   0x");
-								uartPutHex ((*(unsigned char*)&supplyEvents << 4));
-								uart_puts ("\r\n\n");
+                uart_puts ("\n---- Event Registers -----Dev : ");
+                uartPutHex (devNum);
+                uart_puts ("----- \r\n0x");
+                uartPutHex ((powerGoodPortEvents<<4) | powerEnablePortEvents);
+                uart_puts ("   0x");
+                uartPutHex ((classificationPortEvents << 4) | detectionPortEvents);
+                uart_puts ("   0x");
+                uartPutHex ((disconnectPortEvents << 4) | icutPortEvents);
+                uart_puts ("   0x");
+                uartPutHex ((ilimPortEvents << 4) | inrushPortEvents);
+                uart_puts ("   0x");
+                uartPutHex ((*(unsigned char*)&supplyEvents << 4));
+                uart_puts ("\r\n\n");
 
-								uart_puts ("---- Port Status -----\r\n0x");
-								sysPortNum = tps_GetSystemPortNumber (i2cAddList[devNum], TPS238X_PORT_1);
-								rtn = tps_GetPortDetectClassStatus (sysPortNum, &detectStatus, &classStatus);
-								uartPutHex ((classStatus<<4) | detectStatus);
-								uart_puts ("   0x");
-								sysPortNum = tps_GetSystemPortNumber (i2cAddList[devNum], TPS238X_PORT_2);
-								rtn = tps_GetPortDetectClassStatus (sysPortNum, &detectStatus, &classStatus);
-								uartPutHex ((classStatus<<4) | detectStatus);
-								uart_puts ("   0x");
-								sysPortNum = tps_GetSystemPortNumber (i2cAddList[devNum], TPS238X_PORT_3);
-								rtn = tps_GetPortDetectClassStatus (sysPortNum, &detectStatus, &classStatus);
-								uartPutHex ((classStatus<<4) | detectStatus);
-								uart_puts ("   0x");
-								sysPortNum = tps_GetSystemPortNumber (i2cAddList[devNum], TPS238X_PORT_4);
-								rtn = tps_GetPortDetectClassStatus (sysPortNum, &detectStatus, &classStatus);
-								uartPutHex ((classStatus<<4) | detectStatus);
-								uart_puts ("\r\n\n");
-								uart_puts ("---- Power Status -----\r\n0x");
-								rtn = tps_GetDevicePowerStatus (i2cAddList[devNum], &powerEnablePorts, &powerGoodPorts);
-								uartPutHex ((powerGoodPorts<<4) | powerEnablePorts);
-								uart_puts ("\r\n\n");
+                uart_puts ("---- Port Status -----\r\n0x");
+                sysPortNum = tps_GetSystemPortNumber (i2cAddList[devNum], TPS238X_PORT_1);
+                rtn = tps_GetPortDetectClassStatus (sysPortNum, &detectStatus, &classStatus);
+                uartPutHex ((classStatus<<4) | detectStatus);
+                uart_puts ("   0x");
+                sysPortNum = tps_GetSystemPortNumber (i2cAddList[devNum], TPS238X_PORT_2);
+                rtn = tps_GetPortDetectClassStatus (sysPortNum, &detectStatus, &classStatus);
+                uartPutHex ((classStatus<<4) | detectStatus);
+                uart_puts ("   0x");
+                sysPortNum = tps_GetSystemPortNumber (i2cAddList[devNum], TPS238X_PORT_3);
+                rtn = tps_GetPortDetectClassStatus (sysPortNum, &detectStatus, &classStatus);
+                uartPutHex ((classStatus<<4) | detectStatus);
+                uart_puts ("   0x");
+                sysPortNum = tps_GetSystemPortNumber (i2cAddList[devNum], TPS238X_PORT_4);
+                rtn = tps_GetPortDetectClassStatus (sysPortNum, &detectStatus, &classStatus);
+                uartPutHex ((classStatus<<4) | detectStatus);
+                uart_puts ("\r\n\n");
+                uart_puts ("---- Power Status -----\r\n0x");
+                rtn = tps_GetDevicePowerStatus (i2cAddList[devNum], &powerEnablePorts, &powerGoodPorts);
+                uartPutHex ((powerGoodPorts<<4) | powerEnablePorts);
+                uart_puts ("\r\n\n");
             }
 #endif
             //uart_puts ("************************************************\r\n");
@@ -2992,32 +2992,32 @@ void TPS23861_Run(void)
 
 void TPS23861_ModeChange(u8 Mode)
 {
-		if (Mode == 0x00) {
-				TPS23861_Init();
-				PerformDetection = 1;
-				//tps_SetDeviceOpMode (i2cAddList[0], OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUTO);
-				//tps_SetDeviceOpMode (i2cAddList[1], OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUTO);
-				//tps_SetDeviceDisconnectEnable (i2cAddList[0], inactivePorts[0], DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP);
-				//tps_SetDeviceDisconnectEnable (i2cAddList[1], inactivePorts[1], DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP);
-				//inactivePorts[0] = TPS238X_ALL_PORTS;
-				//inactivePorts[1] = TPS238X_ALL_PORTS;
-				//tps_SetDevicePowerOn(i2cAddList[0], inactivePorts[0]);
-				//tps_SetDevicePowerOn(i2cAddList[1], inactivePorts[1]);
-		} else {
-				TPS23861_RST = 0;
-				
-				printf("TPS23861 Power Off\r\n");
-				///*
-				inactivePorts[0] = TPS238X_ALL_PORTS;
-				inactivePorts[1] = TPS238X_ALL_PORTS;
-				// Power off all ports in case we are re-running this application without physically shutting down ports from previous run
-				tps_SetDevicePowerOff(i2cAddList[0], inactivePorts[0]);
-				tps_SetDevicePowerOff(i2cAddList[1], inactivePorts[1]);
-				
-				tps_SetDeviceOpMode (i2cAddList[0], OPERATING_MODE_OFF, OPERATING_MODE_OFF, OPERATING_MODE_OFF, OPERATING_MODE_OFF);
-				tps_SetDeviceOpMode (i2cAddList[1], OPERATING_MODE_OFF, OPERATING_MODE_OFF, OPERATING_MODE_OFF, OPERATING_MODE_OFF);
-				//*/
-		}
+    if (Mode == 0x00) {
+        TPS23861_Init();
+        PerformDetection = 1;
+        //tps_SetDeviceOpMode (i2cAddList[0], OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUTO);
+        //tps_SetDeviceOpMode (i2cAddList[1], OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUTO);
+        //tps_SetDeviceDisconnectEnable (i2cAddList[0], inactivePorts[0], DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP);
+        //tps_SetDeviceDisconnectEnable (i2cAddList[1], inactivePorts[1], DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP);
+        //inactivePorts[0] = TPS238X_ALL_PORTS;
+        //inactivePorts[1] = TPS238X_ALL_PORTS;
+        //tps_SetDevicePowerOn(i2cAddList[0], inactivePorts[0]);
+        //tps_SetDevicePowerOn(i2cAddList[1], inactivePorts[1]);
+    } else {
+        TPS23861_RST = 0;
+        
+        printf("TPS23861 Power Off\r\n");
+        ///*
+        inactivePorts[0] = TPS238X_ALL_PORTS;
+        inactivePorts[1] = TPS238X_ALL_PORTS;
+        // Power off all ports in case we are re-running this application without physically shutting down ports from previous run
+        tps_SetDevicePowerOff(i2cAddList[0], inactivePorts[0]);
+        tps_SetDevicePowerOff(i2cAddList[1], inactivePorts[1]);
+        
+        tps_SetDeviceOpMode (i2cAddList[0], OPERATING_MODE_OFF, OPERATING_MODE_OFF, OPERATING_MODE_OFF, OPERATING_MODE_OFF);
+        tps_SetDeviceOpMode (i2cAddList[1], OPERATING_MODE_OFF, OPERATING_MODE_OFF, OPERATING_MODE_OFF, OPERATING_MODE_OFF);
+        //*/
+    }
 }
 
 #endif

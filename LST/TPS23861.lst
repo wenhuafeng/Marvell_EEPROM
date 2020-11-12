@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 1   
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE TPS23861
@@ -62,7 +62,7 @@ line level    source
               {
                 INT8U i;
               
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 2   
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 2   
 
                 SDAOUT();
                 DelayUs(10);
@@ -72,7 +72,7 @@ line level    source
                   SDIO = (BOOLEAN)(dat & 0x80);
                   DelayUs(5);
                   SCLK = 1;
-                  DelayUs(2); 
+                  DelayUs(2);  
                   dat = dat << 1;
                 }
                 SCLK = 0;
@@ -126,7 +126,7 @@ line level    source
                 SCLK = 0;
               
                 return result;
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 3   
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 3   
 
               }
               
@@ -190,7 +190,7 @@ line level    source
              -****************************************/
               u8 tps_WriteI2CReg (u16 i2cAddress, u8 registerAddress, u8 writeValue)
               {
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 4   
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 4   
 
                   u8 rtn;
                   
@@ -254,7 +254,7 @@ line level    source
               volatile uint8_t rtn;
               TPS238x_Detection_Status_t detectStatus;
               TPS238x_Classification_Status_t classStatus;
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 5   
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 5   
 
               uint16_t current, voltage;
               uint32_t outNum;
@@ -318,7 +318,7 @@ line level    source
               /*********************************************************************************************************
              -*****************************************
               *       Copyright ? 2013-2014 Texas Instruments Incorporated - http://www.ti.com/                         
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 6   
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 6   
 
              -                                             *
               **********************************************************************************************************
@@ -382,7 +382,7 @@ line level    source
               
               /*********************************************************************************************************
              -*****************************************
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 7   
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 7   
 
               *                                 Prototypes                                                              
              -                                        *
@@ -446,7 +446,7 @@ line level    source
                                                                                      {TPS_PORT_NOT_REGISTERED_VALUE, (TP
              -S238x_PortNum_t)TPS_PORT_NOT_REGISTERED_VALUE},
               
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 8   
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 8   
 
                                                                                      {TPS_PORT_NOT_REGISTERED_VALUE, (TP
              -S238x_PortNum_t)TPS_PORT_NOT_REGISTERED_VALUE},
@@ -510,7 +510,7 @@ line level    source
               *
               * @return  uint8_t  systemPortNum     Unique handle that will be used to refer to this device and port num
              -ber in future function calls.
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 9   
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 9   
 
               * @return  TPS_ERR_NO_PORT_AVAILABLE  No port number available, all are in use
               *
@@ -574,7 +574,7 @@ line level    source
               *
               * This function returns the I2C address for the TPS23861 device registered for a given System Port Number
               *
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 10  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 10  
 
               * @param[in]   systemPortNum          Port Number Value returned from the port registration function, tps_
              -RegisterPort()
@@ -638,7 +638,7 @@ line level    source
               /*!
               * @brief Allows a set of TPS23861 to be configured with unique I2C addresses
               *
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 11  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 11  
 
               * The system is designed so a number of TPS23861 can be placed on the same I2C bus. For this to work, each
              - device must have a unique I2C address to
@@ -702,7 +702,7 @@ line level    source
                   for (i=0; i<numDevices; i++)
                   {
                       rtn |= tps_ReadI2CReg (list_ofAddresses[i], TPS238X_I2C_SLAVE_ADDRESS_COMMAND, &current_address);
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 12  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 12  
 
               
                       newAutoBitSetting = (current_address & AUTO_BIT);  // Save the new auto bit setting
@@ -766,7 +766,7 @@ line level    source
               *
               * @sa tps_GetDeviceInterruptMask ()
               * @sa tps_GetDeviceInterruptStatus ()
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 13  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 13  
 
               * @sa tps_GetDeviceAllInterruptEvents ()
               **********************************************************************************************************
@@ -830,7 +830,7 @@ line level    source
                   rtn |= tps_ReadI2CReg (device_i2c_address, TPS238X_CLASS_FIVE_TIMER_ENABLE_COMMAND, &value);
                   *intDelayTime = value & TMR_MASK;
               
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 14  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 14  
 
                   return (rtn);
               }
@@ -863,14 +863,14 @@ line level    source
              - R/W bit)
               * @param[out]  *status             Address of a TPS238X_Interrupt_Register_t variable that will receive th
              -e current interrupt status
-              *                                     PEC_Power_Enable_Change          
-              *                                     PGC_Power_Good_Change            
-              *                                     DISF_Disconnect_Event            
-              *                                     DETC_Detection_Cycle             
-              *                                     CLASC_Classification_Cycle       
-              *                                     IFAULT_ICUT_ILIM_Fault           
-              *                                     INRF_Inrush_Fault                
-              *                                     SUPF_Supply_Event_Fault          
+              *                                      PEC_Power_Enable_Change          
+              *                                      PGC_Power_Good_Change            
+              *                                      DISF_Disconnect_Event            
+              *                                      DETC_Detection_Cycle             
+              *                                      CLASC_Classification_Cycle       
+              *                                      IFAULT_ICUT_ILIM_Fault           
+              *                                      INRF_Inrush_Fault                
+              *                                      SUPF_Supply_Event_Fault          
               *
               * @return  uint8_t    (I2C_SUCCESSFUL or I2C error status)
               *
@@ -894,7 +894,7 @@ line level    source
               /*********************************************************************************************************
              -****************************************
               *  tps_GetDeviceAllInterruptEvents
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 15  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 15  
 
               **********************************************************************************************************
              -****************************************/
@@ -949,7 +949,7 @@ line level    source
              -****************************************/
               uint8_t tps_GetDeviceAllInterruptEvents (uint8_t device_i2c_address,
                                                        TPS238x_On_Off_t clearEvent,
-                                                     TPS238x_Ports_t *powerEnablePortEvents,
+                                                      TPS238x_Ports_t *powerEnablePortEvents,
                                                    TPS238x_Ports_t *powerGoodPortEvents,
                                                    TPS238x_Ports_t *detectionPortEvents,
                                                    TPS238x_Ports_t *classificationPortEvents,
@@ -958,7 +958,7 @@ line level    source
                                                    TPS238x_Ports_t *inrushPortEvents,
                                                    TPS238x_Ports_t *ilimPortEvents,
                                                    TPS238X_Supply_Event_Register_t *supplyEvents)
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 16  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 16  
 
               {
                   uint8_t rtn;
@@ -1022,7 +1022,7 @@ line level    source
              -the TPS23861.
               *
               * The function will return a 0 (CLASS_UNKNOWN) when the port is turned off.
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 17  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 17  
 
               *
               * @param[in]   systemPortNum          Port Number Value returned from the port registration function, tps_
@@ -1054,8 +1054,8 @@ line level    source
                   uint8_t rtn;
                   uint8_t value;
                   uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
-                  uint8_t command = TPS238X_PORT_1_STATUS_COMMAND + (uint8_t) portNum - 1;   // Determine which Port Statu
-             -s command has been requested
+                  uint8_t command = TPS238X_PORT_1_STATUS_COMMAND + (uint8_t) portNum - 1;   // Determine which Port Sta
+             -tus command has been requested
               
                   rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), command, &value);
               
@@ -1086,7 +1086,7 @@ line level    source
              - DETECT_RESIST_LOW,
               *                                            DETECT_RESIST_VALID, DETECT_RESIST_HIGH, DETECT_OPEN_CIRCUIT,
              - DETECT_MOSFET_FAULT,
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 18  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 18  
 
               *                                            DETECT_LEGACY, DETECT_CAP_INVALID_CLAMP_VOLTAGE, DETECT_CAP_I
              -NVALID_DELTA_V, or
@@ -1103,8 +1103,8 @@ line level    source
                   uint8_t rtn;
                   uint8_t value;
                   uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
-                  uint8_t command = TPS238X_PORT_1_STATUS_COMMAND + (uint8_t) portNum - 1;   // Determine which Port Statu
-             -s command has been requested
+                  uint8_t command = TPS238X_PORT_1_STATUS_COMMAND + (uint8_t) portNum - 1;   // Determine which Port Sta
+             -tus command has been requested
               
                   rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), command, &value);
               
@@ -1146,11 +1146,11 @@ line level    source
                   uint8_t rtn;
                   uint8_t value;
                   uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
-                  uint8_t command = TPS238X_PORT_1_STATUS_COMMAND + (uint8_t) portNum - 1;   // Determine which Port Statu
-             -s command has been requested
+                  uint8_t command = TPS238X_PORT_1_STATUS_COMMAND + (uint8_t) portNum - 1;   // Determine which Port Sta
+             -tus command has been requested
               
                   rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), command, &value);
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 19  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 19  
 
               
                   *classificationStatus = (TPS238x_Classification_Status_t)GET_CLASS(value);
@@ -1214,7 +1214,7 @@ line level    source
               *
               * This function will return the power good state of each port.
               *
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 20  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 20  
 
               * @param[in]   device_i2c_address        7 bit I2C address of the TPS238x part being controlled (do not in
              -cluded R/W bit)
@@ -1278,7 +1278,7 @@ line level    source
                   if (rtn != I2C_SUCCESSFUL)
                       return (TPS_ERR_I2C_ERROR);
               
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 21  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 21  
 
                   value = GET_POWER_ENABLE_STATUS(value);
                   if (value & CONVERT_PORT_NUM(portNum))
@@ -1342,7 +1342,7 @@ line level    source
               * @return  uint8_t     TPS_ON if Power Good
               *                      TPS_OFF is Power is NOT good,
               *                      TPS_ERR_I2C_ERROR on I2C error status
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 22  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 22  
 
               *
               * @sa tps_GetDevicePowerGoodStatus ()
@@ -1406,7 +1406,7 @@ line level    source
               
                   rtn = tps_WriteI2CReg (device_i2c_address, TPS238X_POWER_ENABLE_COMMAND, *(uint8_t*)&portsPoweredOn);
               
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 23  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 23  
 
                   return (rtn);
               }
@@ -1470,7 +1470,7 @@ line level    source
              -****************************************/
               uint8_t tps_SetPortPower (uint8_t systemPortNum, TPS238x_On_Off_t on_off)
               {
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 24  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 24  
 
                   uint8_t rtn;
                   uint8_t value;
@@ -1534,7 +1534,7 @@ line level    source
               /*!
               * @brief Returns whether the indicated system port is enabled for detection operation
               *
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 25  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 25  
 
               * This function will return a TPS_ON or TPS_OFF to indicate that the specific system port is enabled for d
              -etection or not
@@ -1598,7 +1598,7 @@ line level    source
                   uint8_t value;
               
                   rtn = tps_ReadI2CReg (device_i2c_address, TPS238X_DETECT_CLASS_ENABLE_COMMAND, &value);
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 26  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 26  
 
               
                   *(uint8_t *)classPorts  = GET_CLASS(value);
@@ -1662,7 +1662,7 @@ line level    source
               * @param[out]  *classPorts               Address of a TPS238x_Ports_t variable that will receive the ports
              - that are enabled for classification
               *                                            with one bit for each port in classification enabled state. 
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 27  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 27  
 
               *
               * @return  uint8_t    (I2C_SUCCESSFUL or I2C error status)
@@ -1726,7 +1726,7 @@ line level    source
                   rtn = tps_WriteI2CReg (device_i2c_address, TPS238X_DETECT_CLASS_ENABLE_COMMAND, value);
               
                   return (rtn);
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 28  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 28  
 
               }
               
@@ -1790,7 +1790,7 @@ line level    source
              -****************************************/
               /*!
               * @brief Returns the ports that are enabled for 2 pair disconnection operation
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 29  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 29  
 
               *
               * This function will return the ports that are configured for 2 pair disconnect operations. Disconnect ope
@@ -1854,7 +1854,7 @@ line level    source
              -LLIAMP, DCTH_30_MILLIAMP or DCTH_50_MILLIAMP]
               *
               * @return  uint8_t    (I2C_SUCCESSFUL or I2C error status)
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 30  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 30  
 
               *
               * @sa tps_SetPortDisconnectEnable ()
@@ -1918,7 +1918,7 @@ line level    source
                   uint8_t disconnectValue;
                   uint8_t thresholdValue;
                   uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 31  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 31  
 
                   uint16_t i2cAddress = tps_GetDeviceI2CAddress(systemPortNum);
               
@@ -1982,7 +1982,7 @@ line level    source
               * @return  uint8_t    (I2C_SUCCESSFUL or I2C error status)
               *
               * @sa tps_ConfigPort ()
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 32  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 32  
 
               * @sa tps_ConfigDevice4Pair ()
               **********************************************************************************************************
@@ -2046,7 +2046,7 @@ line level    source
               *  tps_FastShutdownPortEnable
               **********************************************************************************************************
              -****************************************/
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 33  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 33  
 
               /*!
               * @brief Configures the fast shutdown enable for a specific port on the TPS23861
@@ -2110,7 +2110,7 @@ line level    source
              -T_STANDARD_THEN_LEGACY]
               * @param[in]   twoEvent                  The system can attempt two event physical layer classifications w
              -hen a class 4 or class 5 PD is found
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 34  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 34  
 
               *                                             [TWO_EVENT_DISABLE, TWO_EVENT_AFTER_CLASS_4, TWO_EVENT_AFTER
              -_CLASS_5, or TWO_EVENT_AFTER_CLASS_4_OR_5]
@@ -2174,7 +2174,7 @@ line level    source
                   // Load the Class 5 Enable Setting
                   rtn += tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_CLASS_FIVE_TIMER_ENABLE_COMMAND
              -, &value);
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 35  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 35  
 
                   if (class5Enable == TPS_ON)
                       value |= (CONVERT_PORT_NUM(portNum) << CLASS_5_ENABLE_SHIFT);                 // Set the Class 5 E
@@ -2238,7 +2238,7 @@ line level    source
                       }
                       rtn += tps_WriteI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT43_CONFIGURATION_COMMA
              -ND, value);
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 36  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 36  
 
                   }
               
@@ -2302,7 +2302,7 @@ line level    source
                         ((uint8_t)on_off_Port34 << _4P34EN_SHIFT) |
                         ((uint8_t)disconnectModePort34 << _4P34DIS_SHIFT);
               
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 37  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 37  
 
                   rtn = tps_WriteI2CReg (device_i2c_address, TPS238X_FOUR_PAIR_MODE_COMMAND, value);
               
@@ -2366,7 +2366,7 @@ line level    source
               * @param[in]   device_i2c_address        7 bit I2C address of the TPS238x part being controlled (do not in
              -cluded R/W bit)
               * @param[in]   operatingMode1            Define the operating mode for port 1
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 38  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 38  
 
               *                                            [OPERATING_MODE_OFF, OPERATING_MODE_MANUAL, OPERATING_MODE_SE
              -MI_AUTO, or OPERATING_MODE_AUTO]
@@ -2430,7 +2430,7 @@ line level    source
               uint8_t tps_RestartDeviceDetection (uint8_t device_i2c_address, TPS238x_Ports_t detectPorts)
               {
                   uint8_t rtn;
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 39  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 39  
 
                   uint8_t value;
               
@@ -2494,7 +2494,7 @@ line level    source
               *                                            with one bit for each port restarted. 
               *
               * @return  uint8_t    (I2C_SUCCESSFUL or I2C error status)
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 40  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 40  
 
               *
               * @sa tps_RestartPortClassification ()
@@ -2558,7 +2558,7 @@ line level    source
               *
               * This function will restart both the classification and detection process on the indicated ports on the T
              -PS23861. 
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 41  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 41  
 
               *
               * @param[in]   device_i2c_address        7 bit I2C address of the TPS238x part being controlled (do not in
@@ -2622,7 +2622,7 @@ line level    source
               
               /*********************************************************************************************************
              -****************************************
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 42  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 42  
 
               *  tps_ResetPort                                                                                          
              -                               
@@ -2686,7 +2686,7 @@ line level    source
               *                                           For a 255 mOhm resistor, the LSB will be 61.039 micro-Amps.
               *
               * @return  uint8_t    (I2C_SUCCESSFUL or I2C error status)
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 43  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 43  
 
               *
               * @sa tps_GetDeviceInputVoltage ()
@@ -2750,7 +2750,7 @@ line level    source
                   return (rtn);
               }
               
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 44  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 44  
 
               /*********************************************************************************************************
              -****************************************
@@ -2814,12 +2814,12 @@ line level    source
                                                    TPS238x_Detect_Resistance_Status_t *detectResistanceStatus)
               {
                   uint8_t rtn;
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 45  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 45  
 
                   uint16_t value;
                   uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
-                  uint8_t command = TPS238X_PORT_1_DETECT_RESISTANCE_COMMAND + (2 * ((uint8_t)portNum - 1));         // 2 
-             -bytes for each port
+                  uint8_t command = TPS238X_PORT_1_DETECT_RESISTANCE_COMMAND + (2 * ((uint8_t)portNum - 1));         // 
+             -2 bytes for each port
               
                   rtn = tps_ReadI2CMultiple (tps_GetDeviceI2CAddress(systemPortNum), command, (uint8_t *)&value, 2);
               
@@ -2869,8 +2869,8 @@ line level    source
                   uint8_t rtn;
                   uint16_t value;
                   uint8_t portNum = tps_GetDevicePortNum(systemPortNum);
-                  uint8_t command = TPS238X_PORT_1_DETECT_VOLTAGE_DIFF_COMMAND + (2 * ((uint8_t)portNum - 1));         // 
-             -2 bytes for each port
+                  uint8_t command = TPS238X_PORT_1_DETECT_VOLTAGE_DIFF_COMMAND + (2 * ((uint8_t)portNum - 1));         /
+             -/ 2 bytes for each port
               
                   rtn = tps_ReadI2CMultiple (tps_GetDeviceI2CAddress(systemPortNum), command, (uint8_t *)&value, 2);
               
@@ -2878,7 +2878,7 @@ line level    source
                   *detectVoltageDiffStatus = (TPS238x_Detect_Voltage_Difference_Status_t) (value >> VDS_SHIFT_SHORT);
               
                   return (rtn);
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 46  
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 46  
 
               }
               
@@ -2940,51 +2940,55 @@ line level    source
                   // Load the ICUT Current Threshold
                   if ((uint8_t) portNum <= 2)
                   {
-                    rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT21_CONFIGURATION_COMMAND, &va
-             -lue);
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 47  
+                    rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT21_CONFIGURATION_COMMAND, 
+             -&value);
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 47  
 
                     ICUT12 = value;
                     if ((uint8_t) portNum == 2)
                     {
-                      value &= ~(ICUT_THRESHOLD_MASK << ICUT_PORT_2_SHIFT);                      // Clear old value for this
-             - port number
-                      value |= ((uint8_t)icutCurrentThreshold << ICUT_PORT_2_SHIFT);             // Each port gets 3 bits
+                      value &= ~(ICUT_THRESHOLD_MASK << ICUT_PORT_2_SHIFT);                      // Clear old value for 
+             -this port number
+                      value |= ((uint8_t)icutCurrentThreshold << ICUT_PORT_2_SHIFT);             // Each port gets 3 bit
+             -s
                     }
                     else
                     {
-                      value &= ~(ICUT_THRESHOLD_MASK << ICUT_PORT_1_SHIFT);                      // Clear old value for this
-             - port number
-                      value |= ((uint8_t)icutCurrentThreshold << ICUT_PORT_1_SHIFT);             // Each port gets 3 bits
+                      value &= ~(ICUT_THRESHOLD_MASK << ICUT_PORT_1_SHIFT);                      // Clear old value for 
+             -this port number
+                      value |= ((uint8_t)icutCurrentThreshold << ICUT_PORT_1_SHIFT);             // Each port gets 3 bit
+             -s
                     }
               
-                    rtn += tps_WriteI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT21_CONFIGURATION_COMMAND, v
-             -alue);
-                    rtn += tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT21_CONFIGURATION_COMMAND, &v
-             -alue);
+                    rtn += tps_WriteI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT21_CONFIGURATION_COMMAND
+             -, value);
+                    rtn += tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT21_CONFIGURATION_COMMAND,
+             - &value);
                     ICUT12 = value;
                   }
                   else
                   {
-                    rtn += tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT43_CONFIGURATION_COMMAND, &v
-             -alue);
+                    rtn += tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT43_CONFIGURATION_COMMAND,
+             - &value);
                     ICUT34 = value;
                     if ((uint8_t) portNum == 4)
                     {
-                      value &= ~(ICUT_THRESHOLD_MASK << ICUT_PORT_4_SHIFT);                      // Clear old value for this
-             - port number
-                      value |= ((uint8_t)icutCurrentThreshold << ICUT_PORT_4_SHIFT);             // Each port gets 3 bits
+                      value &= ~(ICUT_THRESHOLD_MASK << ICUT_PORT_4_SHIFT);                      // Clear old value for 
+             -this port number
+                      value |= ((uint8_t)icutCurrentThreshold << ICUT_PORT_4_SHIFT);             // Each port gets 3 bit
+             -s
                     }
                     else
                     {
-                      value &= ~(ICUT_THRESHOLD_MASK << ICUT_PORT_3_SHIFT);                      // Clear old value for this
-             - port number
-                      value |= ((uint8_t)icutCurrentThreshold << ICUT_PORT_3_SHIFT);             // Each port gets 3 bits
+                      value &= ~(ICUT_THRESHOLD_MASK << ICUT_PORT_3_SHIFT);                      // Clear old value for 
+             -this port number
+                      value |= ((uint8_t)icutCurrentThreshold << ICUT_PORT_3_SHIFT);             // Each port gets 3 bit
+             -s
                     }
-                    rtn += tps_WriteI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT43_CONFIGURATION_COMMAND, v
-             -alue);
-                    rtn += tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT43_CONFIGURATION_COMMAND, &v
-             -alue);
+                    rtn += tps_WriteI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT43_CONFIGURATION_COMMAND
+             -, value);
+                    rtn += tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT43_CONFIGURATION_COMMAND,
+             - &value);
                     ICUT34 = value;
                   }
                   return (rtn);
@@ -2998,16 +3002,16 @@ line level    source
                   
                   if ((uint8_t) portNum <= 2)
                   {
-                    rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT21_CONFIGURATION_COMMAND, &va
-             -lue);
+                    rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT21_CONFIGURATION_COMMAND, 
+             -&value);
                     ICUT12 = value;
                   }
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 48  
+
                   else
                   {
-                    rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT43_CONFIGURATION_COMMAND, &va
-             -lue);
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 48  
-
+                    rtn = tps_ReadI2CReg (tps_GetDeviceI2CAddress(systemPortNum), TPS238X_ICUT43_CONFIGURATION_COMMAND, 
+             -&value);
                     ICUT34 = value;
               
                   }
@@ -3066,12 +3070,12 @@ line level    source
                *********************************************************************************************************
              -*****************************************/
               /*!
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 49  
+
                * @brief Set the PoEP bit and set the Icut level for the the particular port.
                *
                * This function will set the PoEP bit and Icut level based upon the expected foldback setting.
                *
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 49  
-
                * @param[in]   systemPortNum          Port Number Value returned from the port registration function, tps
              -_RegisterPort()
                * @param[in]   poepFoldbackCurve      The appropriate Foldback setting setting for the specified port
@@ -3130,12 +3134,12 @@ line level    source
                           value &= ~(ICUT_THRESHOLD_MASK << ICUT_PORT_3_SHIFT);           // Clear old value for this po
              -rt number
                           value |= ((uint8_t) icutCurrentThreshold << ICUT_PORT_3_SHIFT); // Each port gets 3 bits
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 50  
+
                       }
                       rtn += tps_WriteI2CReg(tps_GetDeviceI2CAddress(systemPortNum),
                               TPS238X_ICUT43_CONFIGURATION_COMMAND, value);
                   }
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 50  
-
                   return (rtn);
               }
               
@@ -3194,12 +3198,12 @@ line level    source
               
                   // Read and Clear all Events
                   rtn =  tps_GetDeviceAllInterruptEvents (i2cAddList[0], TPS_ON, &powerEnablePortEvents, &powerGoodPortE
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 51  
+
              -vents, &detectionPortEvents,
                                                           &classificationPortEvents, &icutPortEvents, &disconnectPortEve
              -nts,
                                                           &inrushPortEvents, &ilimPortEvents, &supplyEvents);
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 51  
-
               
                   rtn =  tps_GetDeviceAllInterruptEvents (i2cAddList[1], TPS_ON, &powerEnablePortEvents, &powerGoodPortE
              -vents, &detectionPortEvents,
@@ -3222,8 +3226,8 @@ line level    source
              -UAL, OPERATING_MODE_MANUAL);
                   //tps_SetDeviceOpMode (i2cAddList[1], OPERATING_MODE_MANUAL, OPERATING_MODE_MANUAL, OPERATING_MODE_MAN
              -UAL, OPERATING_MODE_MANUAL);
-                  tps_SetDeviceOpMode (i2cAddList[0], OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERA
-             -TING_MODE_AUTO);
+                  tps_SetDeviceOpMode (i2cAddList[0], OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPE
+             -RATING_MODE_AUTO);
                   tps_SetDeviceOpMode (i2cAddList[1], OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPE
              -RATING_MODE_AUTO);
               
@@ -3258,12 +3262,12 @@ line level    source
                   printf ("Welcome to the POE 23861 - Auto Mode\r\n");
               }
                   
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 52  
+
               void TPS23861_Run(void)
               {
                   IntFlag = 1;    // Set IntFlag to clear SUPF Fault at POR
               
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 52  
-
                   //while (1)
                   //{
               
@@ -3281,8 +3285,8 @@ line level    source
                           {
                               // Get the interrupt and interrupt statuses
                               rtn =  tps_GetDeviceInterruptStatus (i2cAddList[devNum], &intStatus);
-                              rtn =  tps_GetDeviceAllInterruptEvents (i2cAddList[devNum], TPS_ON, &powerEnablePortEvents, &power
-             -GoodPortEvents, &detectionPortEvents,
+                              rtn =  tps_GetDeviceAllInterruptEvents (i2cAddList[devNum], TPS_ON, &powerEnablePortEvents
+             -, &powerGoodPortEvents, &detectionPortEvents,
                                                   &classificationPortEvents, &icutPortEvents, &disconnectPortEvents,
                                                   &inrushPortEvents, &ilimPortEvents, &supplyEvents);
               
@@ -3322,12 +3326,12 @@ line level    source
                                 {
                                   if (target & 0x1)
                                   {
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 53  
+
                                     sysPortNum = tps_GetSystemPortNumber (i2cAddList[devNum], (TPS238x_PortNum_t)i);
               
                                     rtn = tps_GetPortDetectClassStatus (sysPortNum, &detectStatus, &classStatus);
                                     
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 53  
-
                                     printf ("\nClassification Event Port %X",(i + (devNum * 4)));
                                     printf (" - Classification Status: %X\r\n",classStatus);
                                     
@@ -3339,8 +3343,8 @@ line level    source
                                       rtn = tps_SetPortPower (sysPortNum, TPS_ON);
                                       printf ("Turn on Power - Port %X\r\n",(i + (devNum * 4)));
                                       
-                                      failClassOnce[i-1] = 0;              // Subtract 1 as this register is 0 index based, but Port
-             - Numbers are 1 index based
+                                      failClassOnce[i-1] = 0;              // Subtract 1 as this register is 0 index bas
+             -ed, but Port Numbers are 1 index based
               
                                       if(classStatus == CLASS_4)
                                       {
@@ -3353,21 +3357,21 @@ line level    source
                                     }
                                     else
                                     {
-                                      if (failClassOnce[i-1] == 0)        // Subtract 1 as this register is 0 index based, but Port 
-             -Numbers are 1 index based
+                                      if (failClassOnce[i-1] == 0)        // Subtract 1 as this register is 0 index base
+             -d, but Port Numbers are 1 index based
                                       {
                                         // Restart Classification
                                         tps_SetPortDetectClassEnable (sysPortNum, TPS_OFF, TPS_ON);
-                                        failClassOnce[i-1] = 1;         // Subtract 1 as this register is 0 index based, but Port Num
-             -bers are 1 index based
+                                        failClassOnce[i-1] = 1;         // Subtract 1 as this register is 0 index based,
+             - but Port Numbers are 1 index based
                                       }
                                       else
                                       {
                                         // Set the valid port as inactive, so it will attempt another Detection sequence
                                         inactivePorts[devNum] |=  (CONVERT_PORT_NUM(i));
               
-                                        failClassOnce[i-1] = 0;         // Subtract 1 as this register is 0 index based, but Port Num
-             -bers are 1 index based
+                                        failClassOnce[i-1] = 0;         // Subtract 1 as this register is 0 index based,
+             - but Port Numbers are 1 index based
               
                                       }
                                     }
@@ -3386,12 +3390,12 @@ line level    source
                                 *(uint8_t *)&inactivePorts[devNum] |= target;
               
                                 PrintPower = 1;
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 54  
+
               
                                 for (i=TPS238X_PORT_1; i<=TPS238X_PORT_4; i++)
                                 {
                                   if (target & 0x1)
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 54  
-
                                   {
                                     printf ("\nDisconnection Event Port %X\r\n",(i + (devNum * 4)));
                                   }
@@ -3450,12 +3454,12 @@ line level    source
                                     {
                                       printf ("Power No Longer Good Event Port %X\r\n",(i + (devNum * 4)));
                                     }
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 55  
+
                                   }
                                   target >>= 1;
                                 }
                               }
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 55  
-
               
                               //Fault conditions
                               if(intStatus.SUPF_Supply_Event_Fault)
@@ -3514,12 +3518,12 @@ line level    source
                                       {
                                         printf("ICUT Fault Port %X\r\n",(i + (4 * devNum)));
                                       }
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 56  
+
               
                                       if(targetIlim & 0x01)
                                       {
                                         printf("ILIM Fault Port %X\r\n",(i + (4 * devNum)));
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 56  
-
                                       }
               
                                       targetIcut >>= 1;
@@ -3578,12 +3582,12 @@ line level    source
                               printf ("Port 4 Current: %ldmA \r\n",outNum);
                           }
               
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 57  
+
                           if (!(inactivePorts[1] & PORT_1_VALUE))
                           {
                               tps_GetPortMeasurements (sysPortNum5, &voltage, &current);
                               outNum = ((uint32_t)voltage * 3662) / 1000;
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 57  
-
                               printf ("Port 5 Voltage: %ldmV \r\n",outNum);
                               outNum = ((uint32_t)current * 62260) / 1000000;
                               printf ("Port 5 Current: %ldmA \r\n",outNum);
@@ -3621,8 +3625,8 @@ line level    source
                           for (devNum=0; devNum < NUM_OF_TPS23861; devNum++)
                           {
                               // read current value of all event registers (Do not clear)
-                              rtn =  tps_GetDeviceAllInterruptEvents (i2cAddList[devNum], TPS_OFF, &powerEnablePortEvents, &powe
-             -rGoodPortEvents, &detectionPortEvents,
+                              rtn =  tps_GetDeviceAllInterruptEvents (i2cAddList[devNum], TPS_OFF, &powerEnablePortEvent
+             -s, &powerGoodPortEvents, &detectionPortEvents,
                                                   &classificationPortEvents, &icutPortEvents, &disconnectPortEvents,
                                                   &inrushPortEvents, &ilimPortEvents, &supplyEvents);
               
@@ -3642,12 +3646,12 @@ line level    source
               
                               uart_puts ("---- Port Status -----\r\n0x");
                               sysPortNum = tps_GetSystemPortNumber (i2cAddList[devNum], TPS238X_PORT_1);
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 58  
+
                               rtn = tps_GetPortDetectClassStatus (sysPortNum, &detectStatus, &classStatus);
                               uartPutHex ((classStatus<<4) | detectStatus);
                               uart_puts ("   0x");
                               sysPortNum = tps_GetSystemPortNumber (i2cAddList[devNum], TPS238X_PORT_2);
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 58  
-
                               rtn = tps_GetPortDetectClassStatus (sysPortNum, &detectStatus, &classStatus);
                               uartPutHex ((classStatus<<4) | detectStatus);
                               uart_puts ("   0x");
@@ -3690,14 +3694,14 @@ line level    source
                   if (Mode == 0x00) {
                       TPS23861_Init();
                       PerformDetection = 1;
-                      //tps_SetDeviceOpMode (i2cAddList[0], OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, O
-             -PERATING_MODE_AUTO);
-                      //tps_SetDeviceOpMode (i2cAddList[1], OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, O
-             -PERATING_MODE_AUTO);
-                      //tps_SetDeviceDisconnectEnable (i2cAddList[0], inactivePorts[0], DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP
-             -, DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP);
-                      //tps_SetDeviceDisconnectEnable (i2cAddList[1], inactivePorts[1], DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP
-             -, DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP);
+                      //tps_SetDeviceOpMode (i2cAddList[0], OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUT
+             -O, OPERATING_MODE_AUTO);
+                      //tps_SetDeviceOpMode (i2cAddList[1], OPERATING_MODE_AUTO, OPERATING_MODE_AUTO, OPERATING_MODE_AUT
+             -O, OPERATING_MODE_AUTO);
+                      //tps_SetDeviceDisconnectEnable (i2cAddList[0], inactivePorts[0], DCTH_7_5_MILLIAMP, DCTH_7_5_MILL
+             -IAMP, DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP);
+                      //tps_SetDeviceDisconnectEnable (i2cAddList[1], inactivePorts[1], DCTH_7_5_MILLIAMP, DCTH_7_5_MILL
+             -IAMP, DCTH_7_5_MILLIAMP, DCTH_7_5_MILLIAMP);
                       //inactivePorts[0] = TPS238X_ALL_PORTS;
                       //inactivePorts[1] = TPS238X_ALL_PORTS;
                       //tps_SetDevicePowerOn(i2cAddList[0], inactivePorts[0]);
@@ -3706,20 +3710,20 @@ line level    source
                       TPS23861_RST = 0;
                       
                       printf("TPS23861 Power Off\r\n");
+C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 13:12:41 PAGE 59  
+
                       ///*
                       inactivePorts[0] = TPS238X_ALL_PORTS;
                       inactivePorts[1] = TPS238X_ALL_PORTS;
-                      // Power off all ports in case we are re-running this application without physically shutting down por
-C51 COMPILER V9.56.0.0   TPS23861                                                          11/12/2020 12:58:01 PAGE 59  
-
-             -ts from previous run
+                      // Power off all ports in case we are re-running this application without physically shutting down
+             - ports from previous run
                       tps_SetDevicePowerOff(i2cAddList[0], inactivePorts[0]);
                       tps_SetDevicePowerOff(i2cAddList[1], inactivePorts[1]);
                       
-                      tps_SetDeviceOpMode (i2cAddList[0], OPERATING_MODE_OFF, OPERATING_MODE_OFF, OPERATING_MODE_OFF, OPERAT
-             -ING_MODE_OFF);
-                      tps_SetDeviceOpMode (i2cAddList[1], OPERATING_MODE_OFF, OPERATING_MODE_OFF, OPERATING_MODE_OFF, OPERAT
-             -ING_MODE_OFF);
+                      tps_SetDeviceOpMode (i2cAddList[0], OPERATING_MODE_OFF, OPERATING_MODE_OFF, OPERATING_MODE_OFF, OP
+             -ERATING_MODE_OFF);
+                      tps_SetDeviceOpMode (i2cAddList[1], OPERATING_MODE_OFF, OPERATING_MODE_OFF, OPERATING_MODE_OFF, OP
+             -ERATING_MODE_OFF);
                       //*/
                   }
               }

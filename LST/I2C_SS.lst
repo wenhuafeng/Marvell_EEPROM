@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   I2C_SS                                                            11/12/2020 12:58:00 PAGE 1   
+C51 COMPILER V9.56.0.0   I2C_SS                                                            11/12/2020 13:12:40 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE I2C_SS
@@ -62,7 +62,7 @@ line level    source
   52   2          }while(SCL && temp);
   53   1          //SDA=1;//?9?CLK??????,SDA??1
   54   1          //P30_Input_Mode;
-C51 COMPILER V9.56.0.0   I2C_SS                                                            11/12/2020 12:58:00 PAGE 2   
+C51 COMPILER V9.56.0.0   I2C_SS                                                            11/12/2020 13:12:40 PAGE 2   
 
   55   1      }
   56          
@@ -126,7 +126,7 @@ line level    source
  114   5                  //while(SCL);
  115   5                  temp = 100;
  116   5                  do
-C51 COMPILER V9.56.0.0   I2C_SS                                                            11/12/2020 12:58:00 PAGE 3   
+C51 COMPILER V9.56.0.0   I2C_SS                                                            11/12/2020 13:12:40 PAGE 3   
 
  117   5                  {
  118   6                    temp--;
@@ -190,7 +190,7 @@ line level    source
                             case _MODE_0_:
                               send_ptr = IP1717BAN[ii];
                               break;
-C51 COMPILER V9.56.0.0   I2C_SS                                                            11/12/2020 12:58:00 PAGE 4   
+C51 COMPILER V9.56.0.0   I2C_SS                                                            11/12/2020 13:12:40 PAGE 4   
 
                             case _MODE_1_:
                               send_ptr = IP1717B10Full[ii];
@@ -254,7 +254,7 @@ line level    source
  238   6                    do
  239   6                    {
  240   7                      temp--;
-C51 COMPILER V9.56.0.0   I2C_SS                                                            11/12/2020 12:58:00 PAGE 5   
+C51 COMPILER V9.56.0.0   I2C_SS                                                            11/12/2020 13:12:40 PAGE 5   
 
  241   7                    }while(!SCL && temp);
  242   6                    //while(SCL);
