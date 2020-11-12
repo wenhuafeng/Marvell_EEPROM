@@ -1,0 +1,122 @@
+C51 COMPILER V9.56.0.0   FLASH_EEPROM                                                      11/12/2020 12:58:02 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE FLASH_EEPROM
+OBJECT MODULE PLACED IN .\Output\FLASH_EEPROM.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Source\FLASH_EEPROM.c ROM(COMPACT) OPTIMIZE(8,SPEED) BROWSE INCDIR(..\..
+                    -\Include;.\Source) DEBUG OBJECTEXTEND PRINT(.\LST\FLASH_EEPROM.lst) TABS(2) OBJECT(.\Output\FLASH_EEPROM.obj)
+
+line level    source
+
+   1          
+   2          
+   3          #ifndef  OS_MASTER_FILE
+   4          #define  OS_GLOBALS
+   5          #include "includes.h"
+   6          #endif
+   7          
+   8          #if _FLASH_EEPROM_
+   9          
+  10          /*********************************************************************************************************
+             -********
+  11          write_DATAFLASH_BYTE :
+  12          user can copy all this subroutine into project, then call this function in main.
+  13          **********************************************************************************************************
+             -********/    
+  14          void write_DATAFLASH_BYTE(UINT16 u16_addr,UINT8 u8_data)
+  15          {
+  16   1        UINT8 looptmp=0,u8_addrl_r;
+  17   1        unsigned char code *cd_longaddr;
+  18   1        unsigned char xdata *xd_tmp;
+  19   1        
+  20   1      //Check page start address
+  21   1        u8_addrl_r = u16_addr;
+  22   1        if (u8_addrl_r<0x80)
+  23   1        {
+  24   2          u8_addrl_r = 0;
+  25   2        }
+  26   1        else 
+  27   1        {
+  28   2          u8_addrl_r = 0x80;
+  29   2        }
+  30   1      //Save APROM data to XRAM
+  31   1        xd_tmp = 0x280;
+  32   1        cd_longaddr = (u16_addr&0xff00)+u8_addrl_r; 
+  33   1        while (xd_tmp !=0x300)
+  34   1        {
+  35   2          *xd_tmp = *cd_longaddr;
+  36   2          looptmp++;
+  37   2          xd_tmp++;
+  38   2          cd_longaddr++;
+  39   2        }
+  40   1      // Modify customer data in XRAM
+  41   1        u8_addrl_r = u16_addr;
+  42   1        if (u8_addrl_r<0x80)
+  43   1        {
+  44   2          xd_tmp = u8_addrl_r+0x80;
+  45   2        }
+  46   1        else
+  47   1        {
+  48   2          xd_tmp = u8_addrl_r+0x200;
+  49   2        }
+  50   1        *xd_tmp = u8_data;
+  51   1      //Erase APROM DATAFLASH page
+  52   1          IAPAL = u16_addr;
+C51 COMPILER V9.56.0.0   FLASH_EEPROM                                                      11/12/2020 12:58:02 PAGE 2   
+
+  53   1          IAPAH = u16_addr>>8;
+  54   1          IAPFD = 0xFF;
+  55   1          set_IAPEN; 
+  56   1          set_APUEN;
+  57   1          IAPCN = 0x22;
+  58   1          set_IAPGO; 
+  59   1      //Save changed RAM data to APROM DATAFLASH
+  60   1        u8_addrl_r = u16_addr;
+  61   1        if (u8_addrl_r<0x80)
+  62   1        {
+  63   2          u8_addrl_r =0;
+  64   2        }
+  65   1        else
+  66   1        {
+  67   2          u8_addrl_r = 0x80;
+  68   2        }
+  69   1          xd_tmp = 0x280;
+  70   1          IAPAL = u8_addrl_r;
+  71   1          IAPAH = u16_addr>>8;
+  72   1          set_IAPEN; 
+  73   1          set_APUEN;
+  74   1          IAPCN = 0x21;
+  75   1          while (xd_tmp != 0x300)
+  76   1          {
+  77   2            IAPFD = *xd_tmp;
+  78   2            set_IAPGO;
+  79   2            IAPAL++;
+  80   2            xd_tmp++;
+  81   2          }
+  82   1          clr_APUEN;
+  83   1          clr_IAPEN;
+  84   1      }
+  85          
+  86          //-------------------------------------------------------------------------
+  87          UINT8 read_APROM_BYTE(UINT16 code *u16_addr)
+  88          {
+  89   1        UINT8 rdata;
+  90   1        rdata = *u16_addr>>8;
+  91   1        return rdata;
+  92   1      }
+  93          
+  94          #endif
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    335    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       6
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

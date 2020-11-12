@@ -1,0 +1,304 @@
+C51 COMPILER V9.56.0.0   I2C_SS                                                            11/12/2020 12:58:00 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE I2C_SS
+OBJECT MODULE PLACED IN .\Output\I2C_SS.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Source\I2C_SS.c ROM(COMPACT) OPTIMIZE(8,SPEED) BROWSE INCDIR(..\..\Inclu
+                    -de;.\Source) DEBUG OBJECTEXTEND PRINT(.\LST\I2C_SS.lst) TABS(2) OBJECT(.\Output\I2C_SS.obj)
+
+line level    source
+
+   1          
+   2          
+   3          #ifndef  OS_MASTER_FILE
+   4          #define  OS_GLOBALS
+   5          #include "includes.h"
+   6          #endif
+   7          
+   8          #if _SOFTWARE_I2C_SLAVE_
+   9          
+  10          #define _SEND_DATA_NUMBER_    48
+  11          
+  12          data u8 gg,ii,tt;
+  13          data u8 DEVICE_ADR;
+  14          data u8 send_ptr;
+  15          data u8 WORD_ADR;
+  16          data u8 START_flag;
+  17          //u8 WRITE_FLAG;
+  18          //u8 READ_FLAG;
+  19          data u8 temp;
+  20          BOOLEAN PreState,NowState;
+  21          
+  22          //u8 WRITE_BUF[100];
+  23          //u8 READ_BUF[10];
+  24          
+  25          data u16 i16,DataLength;
+  26          
+  27          void Init_I2C(void)
+  28          {
+  29   1          P17_Input_Mode;
+  30   1          P30_Input_Mode;
+  31   1          //P17_Quasi_Mode;
+  32   1          //P30_Quasi_Mode;
+  33   1          IE |= 0x01;
+  34   1      }
+  35          
+  36          void ACK(void)
+  37          {
+  38   1          //while(!SCL);
+  39   1          //P30_PushPull_Mode;
+  40   1          //SDA = 0;
+  41   1          temp = 100;
+  42   1          do
+  43   1          {
+  44   2            temp--;
+  45   2          }while(!SCL && temp);
+  46   1          SDA=0;//?9?CLK??????,SDA??0
+  47   1          //while(SCL);
+  48   1          temp = 100;
+  49   1          do
+  50   1          {
+  51   2            temp--;
+  52   2          }while(SCL && temp);
+  53   1          //SDA=1;//?9?CLK??????,SDA??1
+  54   1          //P30_Input_Mode;
+C51 COMPILER V9.56.0.0   I2C_SS                                                            11/12/2020 12:58:00 PAGE 2   
+
+  55   1      }
+  56          
+  57          //void delay_24C02(void)
+  58          //{
+  59          //    _nop_();
+  60          //}
+  61          
+  62          void IIC() interrupt 0
+  63          {
+  64   1          EX0=0;
+  65   1          if (SCL) {
+  66   2            //while(SCL);
+  67   2            temp = 100;
+  68   2            do
+  69   2            {
+  70   3              temp--;
+  71   3            }while(SCL && temp);
+  72   2            for (gg=8;gg>0;gg--)
+  73   2            {
+  74   3              //while(!SCL);
+  75   3              temp = 100;
+  76   3              do
+  77   3              {
+  78   4                temp--;
+  79   4              }while(!SCL && temp);
+  80   3              DEVICE_ADR<<=1;
+  81   3              if (SDA) {
+  82   4                  DEVICE_ADR|=0x01;
+  83   4              }
+  84   3              //while(SCL);
+  85   3              temp = 100;
+  86   3              do
+  87   3              {
+  88   4                temp--;
+  89   4              }while(SCL && temp);
+  90   3            }
+  91   2            P30_Quasi_Mode;
+  92   2            SDA = 0;
+  93   2            ACK();
+  94   2            //SDA=1;
+  95   2            P30_Input_Mode;
+  96   2            
+  97   2            if ((DEVICE_ADR&0xfe) == 0xa0) {
+  98   3              
+  99   3              tt = 2;
+ 100   3              do
+ 101   3              {
+ 102   4                for (gg=8;gg>0;gg--)
+ 103   4                {
+ 104   5                  //while(!SCL);
+ 105   5                  temp = 100;
+ 106   5                  do
+ 107   5                  {
+ 108   6                    temp--;
+ 109   6                  }while(!SCL && temp);
+ 110   5                  WORD_ADR<<=1;
+ 111   5                  if (SDA) {
+ 112   6                    WORD_ADR|=0x01;
+ 113   6                  }
+ 114   5                  //while(SCL);
+ 115   5                  temp = 100;
+ 116   5                  do
+C51 COMPILER V9.56.0.0   I2C_SS                                                            11/12/2020 12:58:00 PAGE 3   
+
+ 117   5                  {
+ 118   6                    temp--;
+ 119   6                  }while(SCL && temp);
+ 120   5                }
+ 121   4                P30_Quasi_Mode;
+ 122   4                SDA = 0;
+ 123   4                ACK();
+ 124   4                //SDA=1;
+ 125   4                P30_Input_Mode;
+ 126   4                tt--;
+ 127   4              } while (tt);
+ 128   3              
+ 129   3              //while(!SCL);
+ 130   3              temp = 100;
+ 131   3              do
+ 132   3              {
+ 133   4                temp--;
+ 134   4              }while(!SCL && temp);
+ 135   3              
+ 136   3              //Get start signel
+ 137   3              temp=100;
+ 138   3              PreState=SDA;
+ 139   3              while (SCL&&temp--) {
+ 140   4                NowState=SDA;
+ 141   4                if (PreState && !NowState) {
+ 142   5                    START_flag=1;//start
+ 143   5                }
+ 144   4              }
+ 145   3              
+ 146   3              for(gg=8;gg>0;gg--)
+ 147   3              {
+ 148   4                DEVICE_ADR<<=1;
+ 149   4                //while(!SCL);
+ 150   4                temp = 100;
+ 151   4                do
+ 152   4                {
+ 153   5                  temp--;
+ 154   5                }while(!SCL && temp);
+ 155   4                if (SDA) {
+ 156   5                  DEVICE_ADR|=0x01;
+ 157   5                }
+ 158   4                //while(SCL);
+ 159   4                temp = 100;
+ 160   4                do
+ 161   4                {
+ 162   5                  temp--;
+ 163   5                }while(SCL && temp);
+ 164   4              }
+ 165   3              P30_Quasi_Mode;
+ 166   3              SDA = 0;
+ 167   3              ACK();
+ 168   3              //SDA=1;
+ 169   3              //P30_Input_Mode;
+ 170   3              if (DEVICE_ADR==0xa1) {
+ 171   4      #if (_IP1717B_)
+                        for(ii=0;ii<_SEND_DATA_NUMBER_;ii++)
+                        {
+                          switch (ModeCtr)
+                          {
+                            case _MODE_0_:
+                              send_ptr = IP1717BAN[ii];
+                              break;
+C51 COMPILER V9.56.0.0   I2C_SS                                                            11/12/2020 12:58:00 PAGE 4   
+
+                            case _MODE_1_:
+                              send_ptr = IP1717B10Full[ii];
+                              break;
+                            case _MODE_2_:
+                              send_ptr = IP1717BFull10M[ii];
+                              break;
+                            case _MODE_3_:
+                              send_ptr = IP1717BFull100M[ii];
+                              break;
+                            default:
+                              break;
+                          }
+              #elif (_98DX316_)
+ 192   4      //          switch (ModeCtr1)
+ 193   4      //          {
+ 194   4      //            case _MODE_0_:
+ 195   4      //              DataLength = 4818;//regular
+ 196   4      //              break;
+ 197   4      //            case _MODE_1_:
+ 198   4      //              DataLength = 5274;//vlan
+ 199   4      //              break;
+ 200   4      //            default:
+ 201   4      //              break;
+ 202   4      //          }
+ 203   4                if (ModeCtr1 == _MODE_0_) {
+ 204   5                    DataLength = 4818;//regular
+ 205   5                } else {
+ 206   5                    DataLength = 5274+18;//vlan
+ 207   5                }
+ 208   4                for(i16=0; i16<DataLength; i16++)
+ 209   4                {
+ 210   5                  switch (ModeCtr1)
+ 211   5                  {
+ 212   6                    case _MODE_0_:
+ 213   6                      send_ptr = REGULAR_TABLE[i16];
+ 214   6                      break;
+ 215   6                    case _MODE_1_:
+ 216   6      //                if (i16 < 4800) {
+ 217   6      //                    send_ptr = REGULAR_TABLE[i16];
+ 218   6      //                } else {
+ 219   6      //                    send_ptr = VLAN_TABLE[i16-4800];
+ 220   6      //                }
+ 221   6                      
+ 222   6                      if (i16 == 4800) i16 = 4818;
+ 223   6                      send_ptr = REGULAR_TABLE[i16];
+ 224   6                      break;
+ 225   6                    default:
+ 226   6                      break;
+ 227   6                  }
+ 228   5      #endif
+ 229   5                  for(gg=8; gg>0; gg--)
+ 230   5                  {
+ 231   6                    if (send_ptr&0x80) {
+ 232   7                      SDA=1;
+ 233   7                    }else{
+ 234   7                      SDA=0;
+ 235   7                    }
+ 236   6                    //while(!SCL);
+ 237   6                    temp = 100;
+ 238   6                    do
+ 239   6                    {
+ 240   7                      temp--;
+C51 COMPILER V9.56.0.0   I2C_SS                                                            11/12/2020 12:58:00 PAGE 5   
+
+ 241   7                    }while(!SCL && temp);
+ 242   6                    //while(SCL);
+ 243   6                    temp = 100;
+ 244   6                    do
+ 245   6                    {
+ 246   7                      temp--;
+ 247   7                    }while(SCL && temp);
+ 248   6                    send_ptr<<=1;
+ 249   6                  }
+ 250   5                  //P30_Quasi_Mode;
+ 251   5                  //SDA = 0;
+ 252   5                  ACK();
+ 253   5                  //SDA=1;
+ 254   5                  //P30_Input_Mode;
+ 255   5                }
+ 256   4                //EX0=1;
+ 257   4              } else {
+ 258   4                //EX0=1;
+ 259   4              }
+ 260   3            } else {
+ 261   3              //EX0=1;
+ 262   3            }
+ 263   2          } else {
+ 264   2            //EX0=1;
+ 265   2          }
+ 266   1          
+ 267   1          P30_Input_Mode;
+ 268   1          EX0=1;
+ 269   1      }
+ 270          
+ 271          #endif
+ 272          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    454    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     12    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

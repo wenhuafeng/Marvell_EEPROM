@@ -1,0 +1,12 @@
+".\Output\STARTUP.obj",
+".\Output\main.obj",
+".\Output\Common.obj",
+".\Output\Delay.obj",
+".\Output\I2C_S.obj",
+".\Output\I2C_SS.obj",
+".\Output\Table.obj",
+".\Output\TPS23861.obj",
+".\Output\FLASH_EEPROM.obj" 
+TO ".\Output\EEPROM" 
+PRINT(".\LST\EEPROM.m51") RAMSIZE(256) 
+DISABLEWARNING (16) 
